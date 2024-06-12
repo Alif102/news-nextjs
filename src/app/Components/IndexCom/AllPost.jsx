@@ -3,6 +3,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState, useMemo } from 'react';
+import Loader from '../Shared/Loader';
 
 const AllPost = () => {
   const [data, setData] = useState(null);
@@ -54,7 +55,9 @@ const AllPost = () => {
       : [];
   }, [data]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <div>
+    <Loader/>
+  </div>;
   if (!data) return <p>No profile data</p>;
 
   return (

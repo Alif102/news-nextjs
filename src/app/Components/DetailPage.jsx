@@ -3,13 +3,16 @@ import React from 'react';
 import PostBody from './Shared/Postbody';
 import Image from 'next/image';
 import Head from 'next/head';
+import Loader from './Shared/Loader';
 
 const DetailPage = ({ post }) => {
   const imageUrl = `https://admin.desh365.top/public/storage/post-image/${post?.image}`;
   const currentUrl = typeof window !== 'undefined' ? window.location.href : 'https://news-nextjs-phi.vercel.app';
 
   if (!post) {
-    return <div>Loading...</div>;
+    return <div>
+      <Loader/>
+    </div>;
   }
   console.log(post);
 
@@ -30,14 +33,14 @@ const DetailPage = ({ post }) => {
           target='_blank'
           rel='noopener noreferrer'
         >
-          <button className='b bg-blue-600 p-2 text-white rounded-lg'>
+          <button className='bg-blue-600 p-2 text-white rounded-lg'>
             Share on Facebook
           </button>
         </a>
 
         <h1 className='f text-[22px] font-bold'>{post?.title}</h1>
 
-        <div className='rounded-md overflow-hidden relative' style={{ height: '360px', width: '100%' }}>
+        <div className='rounded-md overflow-hidden relative' style={{ height: '360px', width: '50%' }}>
           <Image
             src={imageUrl}
             alt={post?.title || 'Default Alt Text'}

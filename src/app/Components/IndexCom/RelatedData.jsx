@@ -1,9 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import Loader from '../Shared/Loader';
 
 const RelatedData = ({ related }) => {
   if (!related) {
-    return <div className='text-center'>Loading...</div>; // Or any fallback content
+    return <div className='text-center'>
+      <Loader/>
+    </div>; // Or any fallback content
   }
 
   return (
