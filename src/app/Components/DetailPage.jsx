@@ -14,7 +14,7 @@ import Image from 'next/image';
 
 const DetailPage = ({ post }) => {
   const imageUrl = `https://admin.desh365.top/public/storage/post-image/${post?.image}`;
-  const currentUrl = 'https://newsportalnextjs.vercel.app'
+  const currentUrl = 'https://news-nextjs-phi.vercel.app/'
   // useEffect(() => {
 
   //   document.title = post?.title || 'news detail';

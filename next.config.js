@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ['admin.desh365.top' ,  'https://newsportalnextjs.vercel.app'],
+    domains: ['admin.desh365.top' , 'https://news-nextjs-phi.vercel.app' ,  'https://newsportalnextjs.vercel.app'],
     remotePatterns: [
       {
         protocol: 'https',
