@@ -1,24 +1,15 @@
 "use client"
-import React, { useEffect } from 'react';
+import React from 'react';
 import PostBody from './Shared/Postbody';
 import Image from 'next/image';
-// import Link from 'next/link';
 
 
-// export const metadata = {
-//   title: 'Blog',
-//   openGraph: {
-//     title: 'Blog',
-//   },
-// }
+
 
 const DetailPage = ({ post }) => {
   const imageUrl = `https://admin.desh365.top/public/storage/post-image/${post?.image}`;
-  const currentUrl = 'https://news-nextjs-phi.vercel.app/'
-  // useEffect(() => {
-
-  //   document.title = post?.title || 'news detail';
-  // }, [post]);
+  const currentUrl = 'https://news-nextjs-phi.vercel.app'
+  
 
   if (!post) {
     return <div>Loading...</div>;
@@ -29,15 +20,6 @@ const DetailPage = ({ post }) => {
   return (
     <div>
      
-     
-      {/* <Head>
-        <title>titleeeeee</title>
-        <meta property="og:title" content='page details'/>
-        <meta property="og:image" content='https://admin.desh365.top/public/storage/post-image/4598_1716725277.webp' />
-        <meta property="og:url" content='https://newsportalnextjs.vercel.app/Pages/post/16' />
-        <meta property="og:type" content="article" />
-   
-      </Head> */}
 
       <div className='p-2 space-y-5' >
         <a
@@ -54,7 +36,6 @@ const DetailPage = ({ post }) => {
         <h1 className='f text-[22px]  font-bold'> {post?.title} </h1>
 
 
-        {/* <img className='h-[400px] w-full rounded-md' src={imageUrl} alt={post?.title} /> */}
         <div className='rounded-md overflow-hidden relative' style={{ height: '360px', width: '100%' }}>
           <Image
             src={imageUrl}

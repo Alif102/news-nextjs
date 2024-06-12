@@ -7,6 +7,8 @@ export async function generateMetadata({ params }) {
   let title = 'Default Title';
   let description = 'Default description';
   let imageUrl = 'https://news-nextjs-phi.vercel.app/_next/image?url=https%3A%2F%2Fadmin.desh365.top%2Fpublic%2Fstorage%2Fpost-image%2F9040_1716980287.webp&w=384&q=75';
+  let url = `https://news-nextjs-phi.vercel.app/post/${id}`;
+
 
   try {
     const response = await axios.get(`https://admin.desh365.top/api/post/${id}`);
@@ -26,6 +28,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title,
       description,
+      type: 'article',
       images: [
         {
           url: imageUrl,
@@ -34,6 +37,9 @@ export async function generateMetadata({ params }) {
           alt: title,
         },
       ],
+    },
+    fb: {
+      app_id: '972318721003725', // Replace with your actual Facebook App ID
     },
   };
 }

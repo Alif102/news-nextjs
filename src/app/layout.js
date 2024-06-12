@@ -9,6 +9,8 @@ export const metadata = {
   openGraph: {
     title: 'News Portal',
     description: 'News Portal is a...',
+    url: 'https://news-nextjs-phi.vercel.app',
+    type: 'website',
   },
 } 
 
