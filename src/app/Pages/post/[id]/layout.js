@@ -25,6 +25,7 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
+    url,
     openGraph: {
       title,
       description,
@@ -37,11 +38,11 @@ export async function generateMetadata({ params }) {
           alt: title,
         },
       ],
+      site_name: 'News Portal',
+      'fb:app_id': '972318721003725',
     },
-    fb: {
-      app_id: '972318721003725', // Replace with your actual Facebook App ID
-    },
-  };
+    
+}
 }
 
 export default function DetailLayout({ children }) {
