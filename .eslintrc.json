@@ -1,3 +1,13 @@
+// .eslintrc.json
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react"],
+  "rules": {
+    "react/display-name": "off" // Or set to "warn" or "error" based on your preference
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }

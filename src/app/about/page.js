@@ -1,13 +1,9 @@
 import React from 'react'
-import IndexPages from './Pages/IndexPages'
-
 
 const page = () => {
   return (
     <div>
- 
-    <IndexPages/>
-      
+      <h1>aboutttttttt</h1>
     </div>
   )
 }
