@@ -1,4 +1,9 @@
-import React from 'react';
+"use client"
+import React, { useState, useEffect } from 'react';
+import Slider from 'react-slick';
+import { Card, CardBody, Typography } from '@material-tailwind/react';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 async function getPrayerTimes(city) {
   const response = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${city}&country=Bangladesh&method=2`);
@@ -8,27 +13,82 @@ async function getPrayerTimes(city) {
 
 const cities = ['Barishal', 'Chattogram', 'Dhaka', 'Khulna', 'Rajshahi', 'Rangpur', 'Mymensingh', 'Sylhet'];
 
-const PrayerTimesPage = async () => {
-  const prayerTimesData = await Promise.all(cities.map(city => getPrayerTimes(city)));
+const PrayerTimesPage = () => {
+  const [prayerTimesData, setPrayerTimesData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await Promise.all(cities.map(city => getPrayerTimes(city)));
+      setPrayerTimesData(data);
+    };
+
+    fetchData();
+  }, []);
+
+  const settings = {
+    dots: false, // Disable dots
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true, // Enable arrows
+    nextArrow: <SampleNextArrow />, // Custom next arrow component
+    prevArrow: <SamplePrevArrow />, // Custom previous arrow component
+  };
+
+  if (prayerTimesData.length === 0) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-6">Prayer Times for Cities in Bangladesh</h1>
-      {prayerTimesData.map((data) => (
-        <div key={data.city} className="mb-8">
-         
-          <ul className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-          <h2 className="text-2xl font-semibold mb-4">{data.city}</h2>
-            {Object.keys(data.timings).map((time) => (
-              <li key={time} className="border-b last:border-b-0 py-2 flex justify-between">
-                <span className="font-medium">{time}</span>
-                <span>{data.timings[time]}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <Typography variant="h1" className="text-3xl font-bold mb-6">
+        Prayer Times for Cities in Bangladesh
+      </Typography>
+      <Slider {...settings} className="w-full max-w-2xl">
+        {prayerTimesData.map((data) => (
+          <div key={data.city}>
+            <Card className="mb-8">
+              <CardBody>
+                <Typography variant="h2" className="text-2xl font-semibold mb-4">
+                  {data.city}
+                </Typography>
+                <ul>
+                  {Object.keys(data.timings).map((time) => (
+                    <li key={time} className="border-b last:border-b-0 py-2 flex justify-between">
+                      <span className="font-medium">{time}</span>
+                      <span>{data.timings[time]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardBody>
+            </Card>
+          </div>
+        ))}
+      </Slider>
     </div>
+  );
+};
+
+const SampleNextArrow = (props) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'black', borderRadius: '50%' }}
+      onClick={onClick}
+    />
+  );
+};
+
+const SamplePrevArrow = (props) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'black', borderRadius: '50%' }}
+      onClick={onClick}
+    />
   );
 };
 
