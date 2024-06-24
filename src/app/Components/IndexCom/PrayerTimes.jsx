@@ -7,7 +7,7 @@ async function getPrayerTimes(city) {
   return { city, timings: data.data.timings };
 }
 
-const cities = ['Dhaka', 'Mymensingh', 'Barishal', 'Chattogram',  'Khulna', 'Rajshahi', 'Rangpur',  'Sylhet'];
+const cities = ['Barishal', 'Chattogram', 'Dhaka', 'Khulna', 'Rajshahi', 'Rangpur', 'Mymensingh', 'Sylhet'];
 
 const PrayerTimesCarousel = () => {
   const [prayerTimesData, setPrayerTimesData] = useState([]);
@@ -30,12 +30,12 @@ const PrayerTimesCarousel = () => {
   };
 
   return (
-    <div className=" bg-gray-100 w-[350px] flex flex-col items-center justify-center">
-      <h1 className="text-md font-bold mb-6">Prayer Times for Cities in Bangladesh</h1>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+      <h1 className="text-3xl font-bold mb-6">Prayer Times for Cities in Bangladesh</h1>
       {prayerTimesData.length > 0 && (
-        <div className="relative w-[250px] max-w-md">
+        <div className="relative w-full max-w-md">
           <div className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-semibold text-center mb-4">{prayerTimesData[currentIndex].city}</h2>
+            <h2 className="text-2xl font-semibold mb-4">{prayerTimesData[currentIndex].city}</h2>
             <ul>
               {Object.keys(prayerTimesData[currentIndex].timings).map((time) => (
                 <li key={time} className="border-b last:border-b-0 py-2 flex justify-between">
@@ -45,12 +45,12 @@ const PrayerTimesCarousel = () => {
               ))}
             </ul>
           </div>
-          <div className="absolute top-1/2 left-[-20px] transform -translate-y-1/2">
+          <div className="absolute top-1/2 left-0 transform -translate-y-1/2">
             <button onClick={prevSlide} className="text-2xl bg-gray-200 p-2 rounded-full">
               &larr;
             </button>
           </div>
-          <div className="absolute top-1/2 right-[-20px] transform -translate-y-1/2">
+          <div className="absolute top-1/2 right-0 transform -translate-y-1/2">
             <button onClick={nextSlide} className="text-2xl bg-gray-200 p-2 rounded-full">
               &rarr;
             </button>
