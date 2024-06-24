@@ -43,7 +43,7 @@ const AllPost = () => {
                   src={`https://admin.desh365.top/public/storage/post-image/${post?.image}`}
                   alt={post?.title || 'Default Alt Text'}
                   width={90}
-                  height={80}
+                  height={80} priority={true}
                 />
                 {/* <img className='w-20' src={imageUrl} alt={post.title} /> */}
                 <h2 className='text-[14px]'>{post.title}</h2>

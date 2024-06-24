@@ -32,6 +32,7 @@ const RelatedData = ({ related }) => {
                           objectFit='cover'
                           width={300}
                           height={200}
+                          priority={true}
                         />
                       </div>
                       {/* <div>

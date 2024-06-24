@@ -57,7 +57,7 @@ const Naavbar = () => {
             <div className='rounded-md py-1' style={{ height: '80px', width: '80%' }}>
     <Image 
       src={newslogo}
-      alt='logo' 
+      alt='logo' priority={true}
       
     />
   </div>

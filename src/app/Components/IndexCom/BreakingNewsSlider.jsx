@@ -52,6 +52,7 @@ const BreakingNewsSlider = () => {
                 alt={post?.title || 'Default Alt Text'}
                 layout='fill'
                 objectFit='cover'
+                priority={true}
               />
             </div>
 

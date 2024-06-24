@@ -45,7 +45,7 @@ const DetailPage = ({ post }) => {
             src={imageUrl}
             alt={post?.title || 'Default Alt Text'}
             layout="fill"
-            objectFit="cover"
+            objectFit="cover" priority={true}
           />
         </div>
 
