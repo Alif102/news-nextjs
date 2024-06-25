@@ -1,4 +1,5 @@
-import React from 'react';
+"use client"
+import React, { useState, useEffect } from 'react';
 
 async function getPrayerTimes(city) {
   const response = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${city}&country=Bangladesh&method=2`);
@@ -6,31 +7,45 @@ async function getPrayerTimes(city) {
   return { city, timings: data.data.timings };
 }
 
-const cities = ['Barishal', 'Chattogram', 'Dhaka', 'Khulna', 'Rajshahi', 'Rangpur', 'Mymensingh', 'Sylhet'];
+const cities = ['Dhaka', 'Mymensingh', 'Barishal', 'Chattogram', 'Khulna', 'Rajshahi', 'Rangpur', 'Sylhet'];
 
-const PrayerTimesPage = async () => {
-  const prayerTimesData = await Promise.all(cities.map(city => getPrayerTimes(city)));
+const PrayerTimesCarousel = () => {
+  const [prayerTimesData, setPrayerTimesData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await Promise.all(cities.map(city => getPrayerTimes(city)));
+      setPrayerTimesData(data);
+    };
+    fetchData();
+  }, []);
+
+  const prayers = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-6">Prayer Times for Cities in Bangladesh</h1>
-      {prayerTimesData.map((data) => (
-        <div key={data.city} className="mb-8">
-          
-          <ul className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-          <h2 className="text-2xl font-semibold mb-4">{data.city}</h2>
-            {Object.keys(data.timings).map((time) => (
-              <li key={time} className="border-b last:border-b-0 py-2 flex justify-between">
-                
-                <span className="font-medium">{time}</span>
-                <span>{data.timings[time]}</span>
-              </li>
+    <div>
+      <table border="1" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th>City</th>
+            {prayerTimesData.map((cityData, index) => (
+              <th key={index}>{cityData.city}</th>
             ))}
-          </ul>
-        </div>
-      ))}
+          </tr>
+        </thead>
+        <tbody>
+          {prayers.map(prayer => (
+            <tr key={prayer}>
+              <td>{prayer}</td>
+              {prayerTimesData.map((cityData, index) => (
+                <td key={index}>{cityData.timings[prayer]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default PrayerTimesPage;
+export default PrayerTimesCarousel;
