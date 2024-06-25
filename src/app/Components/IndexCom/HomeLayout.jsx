@@ -3,6 +3,7 @@ import BreakingNewsSlider from './BreakingNewsSlider';
 import AllPost from './AllPost';
 import Add1 from './Add1';
 import Add from './Add';
+import PrayerHome from './PrayerHome';
 
 const HomeLayout = () => {
   return (
@@ -20,6 +21,7 @@ const HomeLayout = () => {
             <AllPost />
           </div>
           <Add />
+          <PrayerHome/>
         </div>
       </div>
     </div>

@@ -1,7 +1,8 @@
 import React from 'react'
 import IndexPages from './Pages/IndexPages'
-import PrayerTimesPage from './Components/IndexCom/PrayerTimes'
 import PrayerHome from './Components/IndexCom/PrayerHome'
+import TestPrayer from './Components/IndexCom/TestPrayer'
+// import PrayerTimesPage from './Components/IndexCom/PrayerTimes'
 // import CurrencyRates from './Components/IndexCom/CurrencyRates'
 
 
@@ -12,7 +13,8 @@ const page = () => {
     <IndexPages/>
     {/* <CurrencyRates/> */}
     {/* <PrayerTimesPage/> */}
-    <PrayerHome/>
+    {/* <PrayerHome/> */}
+    {/* <TestPrayer/> */}
       
     </div>
   )
