@@ -3,7 +3,7 @@ import BreakingNewsSlider from './BreakingNewsSlider';
 import AllPost from './AllPost';
 import Add1 from './Add1';
 import Add from './Add';
-import PrayerHome from './PrayerHome';
+import PrayerTimesPage from './PrayerTimePage';
 
 const HomeLayout = () => {
   return (
@@ -21,8 +21,19 @@ const HomeLayout = () => {
             <AllPost />
           </div>
           <Add />
-          <PrayerHome/>
+    
         </div>
+      </div>
+
+      <div className='grid grid-cols-12 gap-5'>
+
+        <div className=' col-span-9'> 
+          <h1>content</h1>
+        </div>
+        <div className=' col-span-3 mr-9'> 
+        <PrayerTimesPage/>
+        </div>
+
       </div>
     </div>
   );
