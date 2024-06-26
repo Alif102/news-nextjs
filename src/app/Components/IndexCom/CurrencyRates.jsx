@@ -19,17 +19,17 @@ const CurrencyRates = () => {
   }, []);
 
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-md max-w-md">
-      <h2 className="text-xl font-bold mb-4">Currency Exchange Rates</h2>
+    <div className=" p-6 rounded-lg shadow-md ">
+      <h2 className="text-md  border-b border-black font-bold mb-4">Currency Exchange Rates</h2>
       {exchangeRates ? (
         <ul className="space-y-2">
-          <li><strong>BDT to USD:</strong> {exchangeRates.BDT.toFixed(2)}</li>
-          <li><strong>BDT to INR:</strong> {exchangeRates.INR.toFixed(2)}</li>
-          <li><strong>BDT to AED:</strong> {exchangeRates.AED.toFixed(2)}</li>
-          <li><strong>BDT to AFN:</strong> {exchangeRates.AFN.toFixed(2)}</li>
-          <li><strong>BDT to AUD:</strong> {exchangeRates.AUD.toFixed(2)}</li>
-          <li><strong>BDT to CAD:</strong> {exchangeRates.CAD.toFixed(2)}</li>
-          <li><strong>BDT to BRL:</strong> {exchangeRates.BRL.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to USD</strong> {exchangeRates.BDT.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to INR</strong> {exchangeRates.INR.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to AED</strong> {exchangeRates.AED.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to AFN</strong> {exchangeRates.AFN.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to AUD</strong> {exchangeRates.AUD.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to CAD</strong> {exchangeRates.CAD.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to BRL</strong> {exchangeRates.BRL.toFixed(2)}</li>
           {/* Add more currencies as needed */}
         </ul>
       ) : (
