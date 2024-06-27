@@ -1,0 +1,20 @@
+{
+    "status": true,
+    "message": "structure found!",
+    "structure": {
+      "id": 1,
+      "logo": null,
+      "main_category": "3",
+      "second_category": "10",
+      "three_category_1": "4",
+      "three_category_2": "2",
+      "three_category_3": "6",
+      "more_three_category": "4,8",
+      "fourth_category": "3",
+      "fifth_category": "1",
+      "fifth_more_category": "8,8,1,4",
+      "created_at": "2024-06-26T11:53:27.000000Z",
+      "updated_at": "2024-06-26T12:21:14.000000Z"
+    }
+  }
+  
