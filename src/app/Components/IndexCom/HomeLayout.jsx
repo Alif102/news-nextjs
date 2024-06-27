@@ -4,9 +4,10 @@ import Add1 from './Add1';
 import Add from './Add';
 import PrayerTimesPage from './PrayerTimePage';
 import CurrencyRates from './CurrencyRates';
-import TestFile from './TestFile';
 import MainCategory from './MainCategory';
 import SecondCategory from './SecondCategory';
+import ThreeCategory1 from './ThreeCategory1';
+import ThreeCategory from './ThreeCategory';
 
 const HomeLayout = () => {
   return (
@@ -43,6 +44,10 @@ const HomeLayout = () => {
 
         </div>
 
+      </div>
+
+      <div>
+        <ThreeCategory/>
       </div>
 
      

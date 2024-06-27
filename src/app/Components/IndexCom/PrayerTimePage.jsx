@@ -44,7 +44,7 @@ const PrayerTimesPage = async () => {
 
   return (
       <ul className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-      <h1 className="text-[14px] text-center px-3 font-bold mb-6 py-1 border-b border-black">আজকের নামাজের সময়সূচী</h1>
+      <h1 className="text-[12px] text-center px-3 font-bold mb-6 py-1 border-b border-black">আজকের নামাজের সময়সূচী</h1>
 
         {filteredPrayerTimes.map((time) => (
           <li key={time} className="border-b last:border-b-0 py-2 flex justify-between">

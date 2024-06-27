@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Carousel } from '@material-tailwind/react';
 import axios from 'axios';
 import Link from 'next/link';
@@ -12,36 +12,51 @@ const MainCategory = () => {
   const [mainCategory, setMainCategory] = useState(null);
 
   useEffect(() => {
-    // Fetch the structure data first
-    axios.get('https://admin.desh365.top/api/structure') // Replace with your structure API URL
-      .then((response) => {
-        console.log('Fetched Structure Data:', response.data);
-        setMainCategory(response.data.structure.main_category);
-      })
-      .catch((error) => {
-        console.error("Error fetching structure data:", error);
-      });
+    const cachedMainCategory = localStorage.getItem('mainCategory');
+    const cachedData = localStorage.getItem('postsData');
 
-    // Fetch the posts data
-    axios.get('https://admin.desh365.top/api/all-post') // Replace with your API URL
-      .then((response) => {
-        console.log('Fetched Data:', response.data); // Log the fetched data to the console
-        setData(response.data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
+    if (cachedMainCategory && cachedData) {
+      setMainCategory(JSON.parse(cachedMainCategory));
+      setData(JSON.parse(cachedData));
+      setLoading(false);
+    } else {
+      // Fetch the structure data first
+      axios.get('https://admin.desh365.top/api/structure')
+        .then((response) => {
+          console.log('Fetched Structure Data:', response.data);
+          const fetchedMainCategory = response.data.structure.main_category;
+          setMainCategory(fetchedMainCategory);
+          localStorage.setItem('mainCategory', JSON.stringify(fetchedMainCategory));
+        })
+        .catch((error) => {
+          console.error("Error fetching structure data:", error);
+        });
+
+      // Fetch the posts data
+      axios.get('https://admin.desh365.top/api/all-post')
+        .then((response) => {
+          console.log('Fetched Data:', response.data);
+          const fetchedData = response.data.data;
+          setData(fetchedData);
+          localStorage.setItem('postsData', JSON.stringify(fetchedData));
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setLoading(false);
+        });
+    }
   }, []);
+
+  const filteredData = useMemo(() => {
+    return data.filter(post => post.category_id == mainCategory);
+  }, [data, mainCategory]);
 
   if (loading) {
     return <div>
       <Loader/>
     </div>;
   }
-
-  const filteredData = data.filter(post => post.category_id == mainCategory);
 
   console.log(data);
 

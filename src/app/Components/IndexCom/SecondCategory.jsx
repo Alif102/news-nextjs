@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Carousel } from '@material-tailwind/react';
 import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -54,7 +53,7 @@ const SecondCategory = () => {
                     {filteredData.length > 0 && (
                         <Link href={`Pages/post/${filteredData[0]?.id}`} key={filteredData[0]?.id}>
                             <div className='' key={filteredData[0]?.id}>
-                                <div className='relative' style={{ height: '410px', width: '90%' }}>
+                                <div className='relative' style={{ height: '380px', width: '90%' }}>
                                     <Image
                                         src={`https://admin.desh365.top/public/storage/post-image/${filteredData[0]?.image}`}
                                         alt={filteredData[0]?.title || 'Default Alt Text'}
