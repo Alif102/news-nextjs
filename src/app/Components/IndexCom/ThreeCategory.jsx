@@ -5,7 +5,7 @@ import ThreeCategory3 from './ThreeCategory3'
 
 const ThreeCategory = () => {
   return (
-    <div className='grid grid-cols-3 gap-3 mt-14 '>
+    <div className='grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-3 px-5 md:px-2 mt-14 '>
       <ThreeCategory1/>
       <ThreeCategory2/>
       <ThreeCategory3/>

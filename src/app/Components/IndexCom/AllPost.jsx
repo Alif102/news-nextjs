@@ -67,7 +67,7 @@ const AllPost = () => {
             return (
               <Link href={`/details/${post?.id}`} key={post?.id}>
                 <div className='flex gap-2 items-center hover:underline' key={post?.id}>
-                  <img className='w-24 h-24' src={imageUrl} alt={post.title} />
+                  <img className='w-24 h-24 transition-all duration-300 hover:scale-110 rounded-md' src={imageUrl} alt={post.title} />
                   <h2>{post.title}</h2>
                 </div>
                 <div className='border borber-b'></div>

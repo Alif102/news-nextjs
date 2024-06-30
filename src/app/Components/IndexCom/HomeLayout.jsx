@@ -16,7 +16,7 @@ const HomeLayout = () => {
   return (
     <div>
       <div className='grid lg:grid-cols-12  gap-3 grid-cols-1 '>
-        <div className='col-span-2'>
+        <div className='col-span-2 md:ml-16 lg:ml-0'>
           <div className='hidden md:block'>
             <Add1 />
           </div>
@@ -36,18 +36,16 @@ const HomeLayout = () => {
         </div>
       </div>
 
-      <div className='grid grid-cols-12 gap-3'>
-        <div className='col-span-10  '>
-          <SecondCategory/>
+<div className='grid lg:grid-cols-12 gap-3 justify-center items-center'>
+  <div className='lg:col-span-10 col-span-1 flex justify-center items-center'>
+    <SecondCategory />
+  </div>
+  
+  <div className='lg:col-span-2 col-span-1 flex justify-center items-center'>
+    <PrayerTimesPage />
+  </div>
+</div>
 
-        </div>
-        
-        <div className='col-span-2'>
-          <PrayerTimesPage/>
-
-        </div>
-
-      </div>
 
       <div>
         <ThreeCategory/>
@@ -60,29 +58,23 @@ const HomeLayout = () => {
 <div className=' col-span-12'> 
   <MoreThreeCategory/>
 </div>
-{/* <div className=' col-span-3'> 
-<CurrencyRates/>
-</div> */}
+
 
 </div>
 
-{/* <div>
-  <TestFile/>
-</div> */}
+
 
    {/* fourth category */}
 
-<div className='grid grid-cols-12 mt-16 gap-3'>
-        <div className='col-span-10  '>
-          <FourthCategory/>
-      </div>
-        
-        <div className='col-span-2'>
-          <CurrencyRates/>
-
-        </div>
-
-      </div>
+   <div className='grid lg:grid-cols-12 gap-3 mt-9 justify-center '>
+  <div className='lg:col-span-10  col-span-1 flex justify-center items-center'>
+    <FourthCategory />
+  </div>
+  
+  <div className='lg:col-span-2 col-span-1 flex justify-center '>
+    <CurrencyRates />
+  </div>
+</div>
                                 {/* fifth category */}
 
 <div className='grid grid-cols-12 mt-16 mb-6 gap-3'>
@@ -96,15 +88,15 @@ const HomeLayout = () => {
         </div>
 
       </div>
+
+
+      
 <div className='grid grid-cols-12 mt-16 mb-6 gap-3'>
         <div className='col-span-12  '>
           <FifthMoreCategory/>
       </div>
         
-        {/* <div className='col-span-2'>
-          <Add1/>
-
-        </div> */}
+        
 
       </div>
 

@@ -52,12 +52,12 @@ const ThreeCategory2 = () => {
                         <div className=' '>
                             <Link href={`Pages/post/${filteredData[0]?.id}`} key={filteredData[0]?.id}>
                             <div className='' key={filteredData[0]?.id}>
-                                <div className='relative ' style={{ height: '280px', }}>
+                                <div className='relative overflow-hidden ' style={{ height: '280px', }}>
                                     <Image
                                         src={`https://admin.desh365.top/public/storage/post-image/${filteredData[0]?.image}`}
                                         alt={filteredData[0]?.title || 'Default Alt Text'}
                                         layout='fill'
-                                        objectFit='cover' className=' rounded-md'
+                                        objectFit='cover' className=' rounded-md  transition-all duration-300 hover:scale-110'
                                         priority={true}
                                     />
                                 </div>

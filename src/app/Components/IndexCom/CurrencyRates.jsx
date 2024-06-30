@@ -19,7 +19,7 @@ const CurrencyRates = () => {
   }, []);
 
   return (
-    <div className="px-2 py-3 rounded-lg shadow-md ">
+    <div className="px-2 rounded-lg shadow-md ">
       <h2 className="text-[13px]  border-b border-black font-bold mb-4">Currency Exchange Rates</h2>
       {exchangeRates ? (
         <ul className="space-y-2">

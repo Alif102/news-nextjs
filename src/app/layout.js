@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
       
      
       <body className={inter.className}>
-        <div className='container max-w-6xl mx-auto'>
+        <div className='container lg:max-w-6xl md:max-w-4xl  mx-auto'>
         <Naavbar/>
         {children}
         </div>
