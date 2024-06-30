@@ -40,44 +40,49 @@ const FifthMoreCategory = () => {
 
   const filteredData = data.filter(post => fifthMoreCategory.includes(post.category_id.toString()));
 
-  console.log(filteredData);
-
-  // Group posts by category_id
-  const groupedData = filteredData.reduce((acc, post) => {
-    if (!acc[post.category_id]) {
-      acc[post.category_id] = [];
+  const categoryData = {};
+  filteredData.forEach(post => {
+    if (!categoryData[post.category_id]) {
+      categoryData[post.category_id] = [];
     }
-    acc[post.category_id].push(post);
-    return acc;
-  }, {});
+    categoryData[post.category_id].push(post);
+  });
 
   return (
     <div>
-      {Object.entries(groupedData).map(([categoryId, posts]) => (
-        <div key={categoryId} className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">Category ID: {categoryId}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {posts.map(post => (
-              <Link href={`Pages/post/${post?.id}`} key={post?.id}>
-                <div className='relative rounded-md overflow-hidden shadow-lg'>
-                  <div className='relative w-full h-64'>
+      {Object.keys(categoryData).map(categoryId => (
+        <div key={categoryId} className='grid grid-cols-8 gap-2 mb-8'>
+          <div className='col-span-4'>
+            {categoryData[categoryId].length > 0 && (
+              <Link href={`Pages/post/${categoryData[categoryId][0]?.id}`} key={categoryData[categoryId][0]?.id}>
+                <div className='' key={categoryData[categoryId][0]?.id}>
+                  <div className='relative' style={{ height: '380px', width: '90%' }}>
                     <Image
-                      src={`https://admin.desh365.top/public/storage/post-image/${post.image}`}
-                      alt={post?.title || 'Default Alt Text'}
+                      src={`https://admin.desh365.top/public/storage/post-image/${categoryData[categoryId][0]?.image}`}
+                      alt={categoryData[categoryId][0]?.title || 'Default Alt Text'}
                       layout='fill'
                       objectFit='cover'
                       priority={true}
                     />
                   </div>
-                  <div className='absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 rounded-md'></div>
-                  <div className='absolute bottom-0 left-0 p-4'>
-                    <h2 className='text-white md:text-xl text-sm font-bold'>
-                      {post.title}
-                    </h2>
-                  </div>
+                  <h2 className='md:text-xl mt-2 text-sm font-bold'>
+                    {categoryData[categoryId][0]?.title}
+                  </h2>
                 </div>
               </Link>
-            ))}
+            )}
+          </div>
+          <div className='col-span-4'>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+              {categoryData[categoryId].slice(1).map(post => (
+                <Link href={`/details/${post?.id}`} key={post.id}>
+                  <div className="flex gap-2 items-center space-y-2" key={post?.id}>
+                    <img className="w-24 h-24" src={`https://admin.desh365.top/public/storage/post-image/${post.image}`} alt={post.title} />
+                    <h2 className='text-sm hover:underline'>{post.title}</h2>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       ))}
