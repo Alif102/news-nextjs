@@ -19,17 +19,17 @@ const CurrencyRates = () => {
   }, []);
 
   return (
-    <div className=" p-6 rounded-lg shadow-md ">
-      <h2 className="text-md  border-b border-black font-bold mb-4">Currency Exchange Rates</h2>
+    <div className="px-2 py-3 rounded-lg shadow-md ">
+      <h2 className="text-[13px]  border-b border-black font-bold mb-4">Currency Exchange Rates</h2>
       {exchangeRates ? (
         <ul className="space-y-2">
-          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to USD</strong> {exchangeRates.BDT.toFixed(2)}</li>
-          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to INR</strong> {exchangeRates.INR.toFixed(2)}</li>
-          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to AED</strong> {exchangeRates.AED.toFixed(2)}</li>
-          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to AFN</strong> {exchangeRates.AFN.toFixed(2)}</li>
-          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to AUD</strong> {exchangeRates.AUD.toFixed(2)}</li>
-          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to CAD</strong> {exchangeRates.CAD.toFixed(2)}</li>
-          <li className='flex py-1 justify-between border-b last:border-b-0'><strong>BDT to BRL</strong> {exchangeRates.BRL.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><h1 className='text-[14px] font-bold'>BDT to USD</h1> {exchangeRates.BDT.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><h1 className='text-[14px] font-bold'>BDT to INR</h1> {exchangeRates.INR.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><h1 className='text-[14px] font-bold'>BDT to AED</h1> {exchangeRates.AED.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><h1 className='text-[14px] font-bold'>BDT to AFN</h1> {exchangeRates.AFN.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><h1 className='text-[14px] font-bold'>BDT to AUD</h1> {exchangeRates.AUD.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><h1 className='text-[14px] font-bold'>BDT to CAD</h1> {exchangeRates.CAD.toFixed(2)}</li>
+          <li className='flex py-1 justify-between border-b last:border-b-0'><h1 className='text-[14px] font-bold'>BDT to BRL</h1> {exchangeRates.BRL.toFixed(2)}</li>
           {/* Add more currencies as needed */}
         </ul>
       ) : (

@@ -6,8 +6,11 @@ import PrayerTimesPage from './PrayerTimePage';
 import CurrencyRates from './CurrencyRates';
 import MainCategory from './MainCategory';
 import SecondCategory from './SecondCategory';
-import ThreeCategory1 from './ThreeCategory1';
 import ThreeCategory from './ThreeCategory';
+import FourthCategory from './FourthCategory';
+import FifthCategory from './FifthCategory';
+import MoreThreeCategory from './MoreThreeCategory';
+import FifthMoreCategory from './FifthMoreCategory';
 
 const HomeLayout = () => {
   return (
@@ -52,20 +55,61 @@ const HomeLayout = () => {
 
      
 
-      <div className='grid mt-5 grid-cols-12 gap-5'>
+      <div className='grid mt-16 grid-cols-12  gap-5'>
 
-<div className=' col-span-9'> 
-  <h1>content</h1>
+<div className=' col-span-12'> 
+  <MoreThreeCategory/>
 </div>
-<div className=' col-span-3'> 
+{/* <div className=' col-span-3'> 
 <CurrencyRates/>
-</div>
+</div> */}
 
 </div>
 
 {/* <div>
   <TestFile/>
 </div> */}
+
+   {/* fourth category */}
+
+<div className='grid grid-cols-12 mt-16 gap-3'>
+        <div className='col-span-10  '>
+          <FourthCategory/>
+      </div>
+        
+        <div className='col-span-2'>
+          <CurrencyRates/>
+
+        </div>
+
+      </div>
+                                {/* fifth category */}
+
+<div className='grid grid-cols-12 mt-16 mb-6 gap-3'>
+        <div className='col-span-10  '>
+          <FifthCategory/>
+      </div>
+        
+        <div className='col-span-2'>
+          <Add1/>
+
+        </div>
+
+      </div>
+<div className='grid grid-cols-12 mt-16 mb-6 gap-3'>
+        <div className='col-span-12  '>
+          <FifthMoreCategory/>
+      </div>
+        
+        {/* <div className='col-span-2'>
+          <Add1/>
+
+        </div> */}
+
+      </div>
+
+
+
     </div>
   );
 };
