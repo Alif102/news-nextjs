@@ -12,40 +12,27 @@ const MainCategory = () => {
   const [mainCategory, setMainCategory] = useState(null);
 
   useEffect(() => {
-    const cachedMainCategory = localStorage.getItem('mainCategory');
-    const cachedData = localStorage.getItem('postsData');
+    // Fetch the structure data first
+    axios.get('https://admin.desh365.top/api/structure')
+      .then((response) => {
+        const fetchedMainCategory = response.data.structure.main_category;
+        setMainCategory(fetchedMainCategory);
+      })
+      .catch((error) => {
+        console.error("Error fetching structure data:", error);
+      });
 
-    if (cachedMainCategory && cachedData) {
-      setMainCategory(JSON.parse(cachedMainCategory));
-      setData(JSON.parse(cachedData));
-      setLoading(false);
-    } else {
-      // Fetch the structure data first
-      axios.get('https://admin.desh365.top/api/structure')
-        .then((response) => {
-          // console.log('Fetched Structure Data:', response.data);
-          const fetchedMainCategory = response.data.structure.main_category;
-          setMainCategory(fetchedMainCategory);
-          localStorage.setItem('mainCategory', JSON.stringify(fetchedMainCategory));
-        })
-        .catch((error) => {
-          console.error("Error fetching structure data:", error);
-        });
-
-      // Fetch the posts data
-      axios.get('https://admin.desh365.top/api/all-post')
-        .then((response) => {
-          // console.log('Fetched Data:', response.data);
-          const fetchedData = response.data.data;
-          setData(fetchedData);
-          localStorage.setItem('postsData', JSON.stringify(fetchedData));
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-          setLoading(false);
-        });
-    }
+    // Fetch the posts data
+    axios.get('https://admin.desh365.top/api/all-post')
+      .then((response) => {
+        const fetchedData = response.data.data;
+        setData(fetchedData);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
   }, []);
 
   const filteredData = useMemo(() => {
@@ -57,8 +44,6 @@ const MainCategory = () => {
       <Loader/>
     </div>;
   }
-
-  console.log(data);
 
   return (
     <Carousel transition={{ duration: 1 }} className='rounded-xl'>

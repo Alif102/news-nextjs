@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import Loader from '../Shared/Loader';
+import Image from 'next/image';
 
 const AllPost = () => {
   const [data, setData] = useState([]);
@@ -10,39 +11,26 @@ const AllPost = () => {
   const [mainCategory, setMainCategory] = useState(null);
 
   useEffect(() => {
-    const cachedMainCategory = localStorage.getItem('mainCategory');
-    const cachedData = localStorage.getItem('postsData');
+    const fetchData = async () => {
+      try {
+        // Fetch the structure data first
+        const structureResponse = await axios.get('https://admin.desh365.top/api/structure');
+        const fetchedMainCategory = structureResponse.data.structure.main_category;
+        setMainCategory(fetchedMainCategory);
 
-    if (cachedMainCategory && cachedData) {
-      setMainCategory(JSON.parse(cachedMainCategory));
-      setData(JSON.parse(cachedData));
-      setLoading(false);
-    } else {
-      // Fetch the structure data first
-      axios.get('https://admin.desh365.top/api/structure')
-        .then((response) => {
-          const fetchedMainCategory = response.data.structure.main_category;
-          setMainCategory(fetchedMainCategory);
-          localStorage.setItem('mainCategory', JSON.stringify(fetchedMainCategory));
-        })
-        .catch((error) => {
-          console.error("Error fetching structure data:", error);
-        });
+        // Fetch the posts data
+        const postsResponse = await axios.get('https://admin.desh365.top/api/all-post');
+        const fetchedData = postsResponse.data.data;
+        setData(fetchedData);
 
-      // Fetch the posts data
-      axios.get('https://admin.desh365.top/api/all-post')
-        .then((response) => {
-          console.log('Fetched Data:', response.data);
-          const fetchedData = response.data.data;
-          setData(fetchedData);
-          localStorage.setItem('postsData', JSON.stringify(fetchedData));
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-          setLoading(false);
-        });
-    }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const filteredData = useMemo(() => {
@@ -55,8 +43,6 @@ const AllPost = () => {
     </div>;
   }
 
-
-
   return (
     <div>
       <div className='shadow-xl w-[100%] mt-4 h-[390px] overflow-x-scroll'>
@@ -66,7 +52,9 @@ const AllPost = () => {
             return (
               <Link href={`/details/${post?.id}`} key={post?.id}>
                 <div className='flex gap-2 items-center hover:underline' key={post?.id}>
-                  <img className='w-24 h-24 transition-all duration-300 hover:scale-110 rounded-md' src={imageUrl} alt={post.title} />
+                  <div className='relative w-24 h-24 transition-all duration-300 hover:scale-110 rounded-md overflow-hidden'>
+                    <Image src={imageUrl} alt={post.title} layout="fill" objectFit="cover" className='rounded-md' />
+                  </div>
                   <h2>{post.title}</h2>
                 </div>
                 <div className='border borber-b'></div>

@@ -11,27 +11,18 @@ const CategoryDisplay = ({ categoryId }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const cacheKey = `category_${categoryId}_data`;
-      const cachedData = localStorage.getItem(cacheKey);
+      try {
+        const structureResponse = await axios.get('https://admin.desh365.top/api/structure');
+        const categoryID = structureResponse.data.structure[categoryId];
 
-      if (cachedData) {
-        setData(JSON.parse(cachedData));
+        const postsResponse = await axios.get('https://admin.desh365.top/api/all-post');
+        const postsData = postsResponse.data.data.filter(post => post.category_id == categoryID);
+
+        setData(postsData);
         setLoading(false);
-      } else {
-        try {
-          const structureResponse = await axios.get('https://admin.desh365.top/api/structure');
-          const categoryID = structureResponse.data.structure[categoryId];
-
-          const postsResponse = await axios.get('https://admin.desh365.top/api/all-post');
-          const postsData = postsResponse.data.data.filter(post => post.category_id == categoryID);
-
-          localStorage.setItem(cacheKey, JSON.stringify(postsData));
-          setData(postsData);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          setLoading(false);
-        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
 

@@ -42,6 +42,7 @@ const FifthCategory = () => {
 
     const filteredData = data.filter(post => post.category_id == fifthCategory);
 
+    console.log(data);
 
     return (
         <div>
