@@ -23,7 +23,7 @@ const MainCategory = () => {
       // Fetch the structure data first
       axios.get('https://admin.desh365.top/api/structure')
         .then((response) => {
-          console.log('Fetched Structure Data:', response.data);
+          // console.log('Fetched Structure Data:', response.data);
           const fetchedMainCategory = response.data.structure.main_category;
           setMainCategory(fetchedMainCategory);
           localStorage.setItem('mainCategory', JSON.stringify(fetchedMainCategory));
@@ -35,7 +35,7 @@ const MainCategory = () => {
       // Fetch the posts data
       axios.get('https://admin.desh365.top/api/all-post')
         .then((response) => {
-          console.log('Fetched Data:', response.data);
+          // console.log('Fetched Data:', response.data);
           const fetchedData = response.data.data;
           setData(fetchedData);
           localStorage.setItem('postsData', JSON.stringify(fetchedData));

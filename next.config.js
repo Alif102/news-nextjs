@@ -4,7 +4,7 @@ module.exports = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'admin.desh365.top',
+        hostname: 'https://news-nextjs-phi.vercel.app',
         port: '',
         pathname: '/public/storage/post-image/**',
       },

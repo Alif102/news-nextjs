@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
+import Loader from '../Shared/Loader';
 
 const FifthMoreCategory = () => {
   const [data, setData] = useState([]);
@@ -13,7 +14,7 @@ const FifthMoreCategory = () => {
     // Fetch the structure data
     axios.get('https://admin.desh365.top/api/structure') // Replace with your structure API URL
       .then((response) => {
-        console.log('Fetched Structure Data:', response.data);
+        // console.log('Fetched Structure Data:', response.data);
         const categories = response.data.structure.fifth_more_category.split(',');
         setFifthMoreCategory(categories);
       })
@@ -35,7 +36,9 @@ const FifthMoreCategory = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>
+      <Loader/>
+    </div>;
   }
 
   const filteredData = data.filter(post => fifthMoreCategory.includes(post.category_id.toString()));

@@ -14,7 +14,7 @@ const SecondCategory = () => {
         // Fetch the structure data first
         axios.get('https://admin.desh365.top/api/structure') // Replace with your structure API URL
             .then((response) => {
-                console.log('Fetched Structure Data:', response.data);
+                // console.log('Fetched Structure Data:', response.data);
                 setsecondCategory(response.data.structure.second_category);
             })
             .catch((error) => {
@@ -24,7 +24,7 @@ const SecondCategory = () => {
         // Fetch the posts data
         axios.get('https://admin.desh365.top/api/all-post') // Replace with your API URL
             .then((response) => {
-                console.log('Fetched Data:', response.data); // Log the fetched data to the console
+                // console.log('Fetched Data:', response.data);
                 setData(response.data.data);
                 setLoading(false);
             })

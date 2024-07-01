@@ -21,7 +21,6 @@ const AllPost = () => {
       // Fetch the structure data first
       axios.get('https://admin.desh365.top/api/structure')
         .then((response) => {
-          console.log('Fetched Structure Data:', response.data);
           const fetchedMainCategory = response.data.structure.main_category;
           setMainCategory(fetchedMainCategory);
           localStorage.setItem('mainCategory', JSON.stringify(fetchedMainCategory));
@@ -56,7 +55,7 @@ const AllPost = () => {
     </div>;
   }
 
-  console.log(data);
+
 
   return (
     <div>

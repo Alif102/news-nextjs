@@ -14,7 +14,6 @@ const FourthCategory = () => {
         // Fetch the structure data first
         axios.get('https://admin.desh365.top/api/structure') // Replace with your structure API URL
             .then((response) => {
-                console.log('Fetched Structure Data:', response.data);
                 setfourthCategory(response.data.structure.fourth_category);
             })
             .catch((error) => {
@@ -42,7 +41,6 @@ const FourthCategory = () => {
 
     const filteredData = data.filter(post => post.category_id == fourthCategory);
 
-    console.log(data);
 
     return (
         <div>
