@@ -1,67 +1,53 @@
 'use client';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
-import Loader from '../Shared/Loader';
-import Image from 'next/image';
 
 const AllPost = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [mainCategory, setMainCategory] = useState(null);
+  // State to store posts
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPosts = async () => {
       try {
-        // Fetch the structure data first
-        const structureResponse = await axios.get('https://admin.desh365.top/api/structure');
-        const fetchedMainCategory = structureResponse.data.structure.main_category;
-        setMainCategory(fetchedMainCategory);
-
-        // Fetch the posts data
-        const postsResponse = await axios.get('https://admin.desh365.top/api/all-post');
-        const fetchedData = postsResponse.data.data;
-        setData(fetchedData);
-
-        setLoading(false);
+        // Check if cached data exists
+        const cachedData = localStorage.getItem('cachedPosts');
+        console.log(cachedData)
+        if (cachedData) {
+          setPosts(JSON.parse(cachedData));
+        } else {
+          // Fetch data from the API
+          const response = await axios.get('https://admin.desh365.top/api/all-post');
+          const postData = response.data.data.slice(0, 10);
+          // Update state with fetched data
+          setPosts(postData);
+          // Cache the fetched data
+          localStorage.setItem('cachedPosts', JSON.stringify(postData));
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
+        console.error('Error fetching the posts:', error);
       }
     };
+    // console.log(cachedData)
 
-    fetchData();
+    fetchPosts();
   }, []);
 
-  const filteredData = useMemo(() => {
-    return data.filter(post => post.category_id == mainCategory);
-  }, [data, mainCategory]);
-
-  if (loading) {
-    return <div>
-      <Loader/>
-    </div>;
-  }
-
   return (
-    <div>
-      <div className='shadow-xl w-[100%] mt-4 h-[390px] overflow-x-scroll'>
-        <div className='flex flex-col space-y-4 gap-3 py-4'>
-          {filteredData.map(post => {
-            const imageUrl = `https://admin.desh365.top/public/storage/post-image/${post.image}`;
-            return (
-              <Link href={`/details/${post?.id}`} key={post?.id}>
-                <div className='flex gap-2 items-center hover:underline' key={post?.id}>
-                  <div className='relative w-24 h-24 transition-all duration-300 hover:scale-110 rounded-md overflow-hidden'>
-                    <Image src={imageUrl} alt={post.title} layout="fill" objectFit="cover" className='rounded-md' />
-                  </div>
-                  <h2>{post.title}</h2>
-                </div>
-                <div className='border borber-b'></div>
-              </Link>
-            );
-          })}
-        </div>
+    <div className='w-[100%] h-[410px] py-4 shadow-lg overflow-x-scroll'>
+      <div className='flex flex-col space-y-4 gap-3 py-4'>
+        {posts.map(post => {
+          const imageUrl = `https://admin.desh365.top/public/storage/post-image/${post.image}`;
+          return (
+            <Link href={`Pages/post/${post?.id}`} key={post?.id}>
+              <div className='flex gap-2 justify-center items-center hover:underline' key={post?.id}>
+                <img className='w-20 rounded-md transition-all duration-300 hover:scale-110' src={imageUrl} alt={post.title} />
+                <h2 className='text-[14px]'>{post.title}</h2>
+              </div>
+              <div className='border borber-b'></div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

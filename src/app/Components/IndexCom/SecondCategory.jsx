@@ -79,7 +79,7 @@ const SecondCategory = () => {
     const imageUrl = `https://admin.desh365.top/public/storage/post-image/${post.image}`;
 
     return (
-      <Link href={`/details/${post?.id}`} key={post.id}>
+      <Link href={`/Pages/post/${post?.id}`} key={post.id}>
         <div className="flex gap-2 items-center space-y-2" key={post?.id}>
           <img className="w-24 h-24 rounded-md transition-all duration-300 hover:scale-110" src={imageUrl} alt={post.title} />
           <h2 className='text-sm hover:underline'>{post.title}</h2>
