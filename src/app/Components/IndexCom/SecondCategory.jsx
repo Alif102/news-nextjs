@@ -87,7 +87,7 @@ const SecondCategory = () => {
       </Link>
     );
   })}
-</div>
+</div> 
              </div>
             </div>
         </div>

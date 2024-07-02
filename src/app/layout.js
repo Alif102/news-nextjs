@@ -12,21 +12,21 @@ export const metadata = {
     url: 'https://news-nextjs-phi.vercel.app',
     type: 'website',
   },
-} 
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      
-      
-     
+      <head>
+        <script src="https://jsc.mgid.com/site/556728.js" async></script>
+      </head>
       <body className={inter.className}>
-        <div className='container lg:max-w-6xl md:max-w-4xl  mx-auto'>
-        <Naavbar/>
-        {children}
+        <div className="container lg:max-w-6xl md:max-w-4xl mx-auto">
+          <Naavbar />
+          
+          {children}
         </div>
-        </body>
+      </body>
     </html>
-  )
+  );
 }
-

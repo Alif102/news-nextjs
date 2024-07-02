@@ -25,7 +25,7 @@ const MoreThreeCategory = () => {
     axios.get('https://admin.desh365.top/api/all-post') // Replace with your API URL
       .then((response) => {
         // console.log('Fetched Data:', response.data); 
-        setData(response.data.data);
+        setData(response.data.data.posts);
         setLoading(false);
       })
       .catch((error) => {

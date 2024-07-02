@@ -18,7 +18,7 @@ const AllPost = () => {
         } else {
           // Fetch data from the API
           const response = await axios.get('https://admin.desh365.top/api/all-post');
-          const postData = response.data.data.slice(0, 10);
+          const postData = response.data.data.posts.slice(0, 10);
           // Update state with fetched data
           setPosts(postData);
           // Cache the fetched data
@@ -34,6 +34,7 @@ const AllPost = () => {
   }, []);
 
   return (
+    <div>
     <div className='w-[100%] h-[410px] py-4 shadow-lg overflow-x-scroll'>
       <div className='flex flex-col space-y-4 gap-3 py-4'>
         {posts.map(post => {
@@ -49,6 +50,9 @@ const AllPost = () => {
           );
         })}
       </div>
+
+     
+    </div>
     </div>
   );
 };
