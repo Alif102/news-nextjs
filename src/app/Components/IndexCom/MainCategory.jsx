@@ -1,55 +1,54 @@
-'use client';
-import React, { useEffect, useState, useMemo } from 'react';
-import { Carousel } from '@material-tailwind/react';
+"use client"
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Carousel } from '@material-tailwind/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Loader from '../Shared/Loader';
-
 const MainCategory = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [mainCategory, setMainCategory] = useState(null);
+  const [mainCategoryPosts, setMainCategoryPosts] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the structure data first
-    axios.get('https://admin.desh365.top/api/structure')
-      .then((response) => {
-        const fetchedMainCategory = response.data.structure.main_category;
-        setMainCategory(fetchedMainCategory);
-      })
-      .catch((error) => {
-        console.error("Error fetching structure data:", error);
-      });
+    const fetchData = async () => {
+      try {
+        // Fetch the structure data
+        const structureResponse = await axios.get('https://admin.desh365.top/api/structure');
+        const mainCategory = parseInt(structureResponse.data.structure.main_category);
 
-    // Fetch the posts data
-    axios.get('https://admin.desh365.top/api/all-post')
-      .then((response) => {
-        const fetchedData = response.data.data;
-        setData(fetchedData);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
+        // Fetch the allpost data
+        const allPostsResponse = await axios.get('https://admin.desh365.top/api/all-post');
+        const allPosts = allPostsResponse.data.data;
+
+        // Filter posts based on the main category
+        const filteredPosts = allPosts.flatMap(category => 
+          category.posts.filter(post => post.category_id === mainCategory)
+        );
+
+        // Set the filtered posts to state
+        setMainCategoryPosts(filteredPosts);
+      } catch (error) {
+        setError('An error occurred while fetching the data');
+        console.error(error);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const filteredData = useMemo(() => {
-    return data.filter(post => post.category_id == mainCategory);
-  }, [data, mainCategory]);
-
-  if (loading) {
-    return <div>
-      <Loader/>
-    </div>;
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return (
-    <Carousel transition={{ duration: 1 }} className='rounded-xl'>
-      {filteredData.map(post => (
+    <div>
+      
+      <div>
+      <Carousel transition={{ duration: 1 }} className='rounded-xl'>
+  {mainCategoryPosts.length > 0 ? (
+    mainCategoryPosts.map(post => {
+      return (
         <Link href={`Pages/post/${post?.id}`} key={post?.id}>
-          <div className='' key={post?.id}>
+        <div className='' key={post?.id}>
             <div className='relative' style={{ height: '410px', width: '100%' }}>
               <div className='object-cover rounded-md h-full w-full relative'>
                 <Image
@@ -69,8 +68,14 @@ const MainCategory = () => {
             </div>
           </div>
         </Link>
-      ))}
-    </Carousel>
+      );
+    })
+  ) : (
+    <p>No posts available for the main category</p>
+  )}
+  </Carousel>
+</div>
+    </div>
   );
 };
 

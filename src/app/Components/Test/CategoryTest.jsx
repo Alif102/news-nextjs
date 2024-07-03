@@ -4,8 +4,8 @@ import axios from 'axios';
 import Link from 'next/link'; // Ensure you're using Next.js for Link component
 import Image from 'next/image'; // Ensure you're using Next.js for Image component
 
-const FifthCategory = () => {
-  const [fifthCategoryPosts, setfifthCategoryPosts] = useState([]);
+const SecondCategory = () => {
+  const [matchedPosts, setSecondCategoryPosts] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -13,19 +13,19 @@ const FifthCategory = () => {
       try {
         // Fetch the structure data
         const structureResponse = await axios.get('https://admin.desh365.top/api/structure');
-        const fifthCategory = parseInt(structureResponse.data.structure.fifth_category);
+        const secondCategory = parseInt(structureResponse.data.structure.second_category);
 
         // Fetch the allpost data
         const allPostsResponse = await axios.get('https://admin.desh365.top/api/all-post');
         const allPosts = allPostsResponse.data.data;
 
-        // Filter posts based on the fifth category
+        // Filter posts based on the second category
         const filteredPosts = allPosts.flatMap(category => 
-          category.posts.filter(post => post.category_id === fifthCategory)
+          category.posts.filter(post => post.category_id === secondCategory)
         );
 
         // Set the filtered posts to state
-        setfifthCategoryPosts(filteredPosts);
+        setSecondCategoryPosts(filteredPosts);
       } catch (error) {
         setError('An error occurred while fetching the data');
         console.error(error);
@@ -42,21 +42,21 @@ const FifthCategory = () => {
   return (
     <div className='grid lg:grid-cols-8 gap-2'>
       <div className='lg:col-span-4 col-span-1 flex justify-center items-center'>
-        {fifthCategoryPosts.length > 0 && (
-          <Link href={`/Pages/post/${fifthCategoryPosts[0]?.id}`} key={fifthCategoryPosts[0]?.id}>
-            <div key={fifthCategoryPosts[0]?.id}>
+        {matchedPosts.length > 0 && (
+          <Link href={`/Pages/post/${matchedPosts[0]?.id}`} key={matchedPosts[0]?.id}>
+            <div key={matchedPosts[0]?.id}>
               <div className='relative' style={{ height: '380px', width: '100%' }}>
                 <Image
                   className='rounded-xl'
-                  src={`https://admin.desh365.top/public/storage/post-image/${fifthCategoryPosts[0]?.image}`}
-                  alt={fifthCategoryPosts[0]?.title || 'Default Alt Text'}
+                  src={`https://admin.desh365.top/public/storage/post-image/${matchedPosts[0]?.image}`}
+                  alt={matchedPosts[0]?.title || 'Default Alt Text'}
                   layout='fill'
                   objectFit='cover'
                   priority={true}
                 />
               </div>
               <h2 className='md:text-xl mt-2 text-sm font-bold'>
-                {fifthCategoryPosts[0]?.title}
+                {matchedPosts[0]?.title}
               </h2>
             </div>
           </Link>
@@ -65,7 +65,7 @@ const FifthCategory = () => {
 
       <div className='lg:col-span-4 col-span-1'>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-8 md:px-2 lg:px-0 py-4">
-          {fifthCategoryPosts.slice(1).map(post => {
+          {matchedPosts.slice(1).map(post => {
             const imageUrl = `https://admin.desh365.top/public/storage/post-image/${post.image}`;
             return (
               <Link href={`Pages/post/${post?.id}`} key={post.id}>
@@ -82,4 +82,4 @@ const FifthCategory = () => {
   );
 };
 
-export default FifthCategory;
+export default SecondCategory;

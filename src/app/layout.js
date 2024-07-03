@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Naavbar from './Components/Navbar';
+// import AdComponent from './Components/AdComponent';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,12 +19,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <script src="https://jsc.mgid.com/site/556728.js" async></script>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3355748505131146" crossOrigin="anonymous"></script>
       </head>
       <body className={inter.className}>
         <div className="container lg:max-w-6xl md:max-w-4xl mx-auto">
           <Naavbar />
-          
+          {/* <AdComponent /> */}
           {children}
         </div>
       </body>

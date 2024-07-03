@@ -11,34 +11,33 @@ const FifthMoreCategory = () => {
   const [fifthMoreCategory, setFifthMoreCategory] = useState([]);
 
   useEffect(() => {
-    // Fetch the structure data
-    axios.get('https://admin.desh365.top/api/structure') // Replace with your structure API URL
-      .then((response) => {
-        // console.log('Fetched Structure Data:', response.data);
+    const fetchStructureData = async () => {
+      try {
+        const response = await axios.get('https://admin.desh365.top/api/structure');
         const categories = response.data.structure.fifth_more_category.split(',');
         setFifthMoreCategory(categories);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching structure data:", error);
-      });
+      }
+    };
 
-    // Fetch the posts data
-    axios.get('https://admin.desh365.top/api/all-post') // Replace with your API URL
-      .then((response) => {
-        console.log('Fetched Data:', response.data); // Log the fetched data to the console
-        setData(response.data.data);
+    const fetchPostsData = async () => {
+      try {
+        const response = await axios.get('https://admin.desh365.top/api/all-post');
+        setData(response.data.data.flatMap(category => category.posts));
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchStructureData();
+    fetchPostsData();
   }, []);
 
   if (loading) {
-    return <div>
-      <Loader/>
-    </div>;
+    return <Loader />;
   }
 
   const filteredData = data.filter(post => fifthMoreCategory.includes(post.category_id.toString()));
@@ -57,7 +56,7 @@ const FifthMoreCategory = () => {
         <div key={categoryId} className='grid grid-cols-8 gap-2 mb-8'>
           <div className='col-span-4'>
             {categoryData[categoryId].length > 0 && (
-              <Link href={`Pages/post/${categoryData[categoryId][0]?.id}`} key={categoryData[categoryId][0]?.id}>
+              <Link href={`/Pages/post/${categoryData[categoryId][0]?.id}`} key={categoryData[categoryId][0]?.id}>
                 <div className='' key={categoryData[categoryId][0]?.id}>
                   <div className='relative' style={{ height: '380px', width: '90%' }}>
                     <Image

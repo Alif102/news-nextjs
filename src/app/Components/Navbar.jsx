@@ -27,6 +27,8 @@ const Navbar = () => {
     fetchData();
   }, []);
 
+  console.log(logo)
+
 
 
 

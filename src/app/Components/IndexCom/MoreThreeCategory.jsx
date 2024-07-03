@@ -11,9 +11,8 @@ const MoreThreeCategory = () => {
 
   useEffect(() => {
     // Fetch the structure data
-    axios.get('https://admin.desh365.top/api/structure') // Replace with your structure API URL
+    axios.get('https://admin.desh365.top/api/structure')
       .then((response) => {
-        // console.log('Fetched Structure Data:', response.data);
         const categories = response.data.structure.more_three_category.split(',');
         setMoreThreeCategory(categories);
       })
@@ -22,10 +21,10 @@ const MoreThreeCategory = () => {
       });
 
     // Fetch the posts data
-    axios.get('https://admin.desh365.top/api/all-post') // Replace with your API URL
+    axios.get('https://admin.desh365.top/api/all-post')
       .then((response) => {
-        // console.log('Fetched Data:', response.data); 
-        setData(response.data.data.posts);
+        const allPosts = response.data.data.flatMap(category => category.posts);
+        setData(allPosts);
         setLoading(false);
       })
       .catch((error) => {
@@ -50,33 +49,33 @@ const MoreThreeCategory = () => {
     return true;
   });
 
-  console.log(uniqueFilteredData);
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {uniqueFilteredData.map(post => (
-      <Link href={`Pages/post/${post?.id}`} key={post?.id}>
-        <div className='relative rounded-md overflow-hidden shadow-lg'>
-          <div className='relative w-full h-64'>
-            <Image
-              src={`https://admin.desh365.top/public/storage/post-image/${post.image}`}
-              alt={post?.title || 'Default Alt Text'}
-              layout='fill'
-              objectFit='cover'
-              priority={true}
-            />
+      {uniqueFilteredData.map(post => (
+        <Link href={`Pages/post/${post?.id}`} key={post?.id}>
+          <div className='relative rounded-md overflow-hidden shadow-lg'>
+          <h2 className=' md:text-xl mb-3 text-sm font-bold'>
+                {post?.category_name}
+              </h2>
+            <div className='relative w-full h-64'>
+              <Image
+                src={`https://admin.desh365.top/public/storage/post-image/${post.image}`}
+                alt={post?.title || 'Default Alt Text'}
+                layout='fill'
+                objectFit='cover'
+                priority={true}
+              />
+            </div>
+            <div className='absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 rounded-md'></div>
+            <div className='absolute bottom-0 left-0 p-4'>
+              <h2 className='text-white md:text-md text-sm font-bold'>
+                {post.title}
+              </h2>
+            </div>
           </div>
-          <div className='absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 rounded-md'></div>
-          <div className='absolute bottom-0 left-0 p-4'>
-            <h2 className='text-white md:text-xl text-sm font-bold'>
-              {post.title}
-            </h2>
-          </div>
-         
-        </div>
-      </Link>
-    ))}
-  </div>
+        </Link>
+      ))}
+    </div>
   );
 };
 

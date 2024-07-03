@@ -1,67 +1,53 @@
 "use client"
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-
-const fetchPosts = async () => {
-  const response = await fetch('https://admin.desh365.top/api/all-post');
-  const data = await response.json();
-  return data;
-};
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const TestFile2 = () => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [secondCategory, setSecondCategory] = useState(null);
 
   useEffect(() => {
-    const getPosts = async () => {
+    const fetchData = async () => {
       try {
-        setLoading(true);
-        // Check if data exists in local storage
-        const cachedData = localStorage.getItem('posts');
-        if (cachedData) {
-          setPosts(JSON.parse(cachedData));
-          setLoading(false);
-        } else {
-          // Fetch new data and update local storage
-          const data = await fetchPosts();
-          setPosts(data.data);
-          localStorage.setItem('posts', JSON.stringify(data.data));
-          setLoading(false);
-        }
-      } catch (err) {
-        setError(err);
-        setLoading(false);
+        // Fetch structure data
+        const structureResponse = await axios.get('https://admin.desh365.top/api/structure');
+        const structure = structureResponse.data.structure;
+        setSecondCategory(parseInt(structure.second_category, 10));
+
+        // Fetch all posts data
+        const postsResponse = await axios.get('https://admin.desh365.top/api/all-post');
+        const allPosts = postsResponse.data.data;
+
+        // Filter posts by second_category
+        const filteredPosts = allPosts
+          .flatMap(postGroup => postGroup.posts)
+          .filter(post => post.category_id === parseInt(structure.second_category, 10));
+
+        setPosts(filteredPosts);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     };
 
-    getPosts();
+    fetchData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching data: {error.message}</p>;
-
   return (
-    <div className='w-[100%] h-[410px] py-4 shadow-lg overflow-x-scroll'>
-      <div className='flex flex-col space-y-4 gap-3 py-4'>
-        {posts.map(category => (
-          <div key={category.category_id}>
-            {category.posts.map(post => {
-              const imageUrl = `https://admin.desh365.top/public/storage/post-image/${post.image}`;
-              console.log(imageUrl);  // Log the image URL
-              return (
-                <Link href={`Pages/post/${post?.id}`} key={post?.id}>
-                  <div className='flex gap-2 justify-center items-center hover:underline' key={post?.id}>
-                    <img className='w-20 rounded-md transition-all duration-300 hover:scale-110' src={imageUrl} alt={post.title} />
-                    <h2 className='text-[14px]'>{post.title}</h2>
-                  </div>
-                  <div className='border border-b'></div>
-                </Link>
-              );
-            })}
-          </div>
-        ))}
-      </div>
+    <div>
+      <h1>Filtered Posts</h1>
+      {posts.length > 0 ? (
+        <ul>
+          {posts.map(post => (
+            <li key={post.id}>
+              <h2>{post.title}</h2>
+              <p>{post.post_body}</p>
+              <img src={`https://admin.desh365.top/storage/${post.image}`} alt={post.title} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No posts found.</p>
+      )}
     </div>
   );
 };
