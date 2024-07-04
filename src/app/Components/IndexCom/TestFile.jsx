@@ -1,46 +1,70 @@
 "use client"
-// pages/index.js
-import { useEffect, useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
+import Link from 'next/link';
 
-export default function TestFile() {
-  const [data, setData] = useState([]);
+const TestFile = () => {
+  const [posts, setPosts] = useState([]);
+  const [structure, setStructure] = useState(null);
 
   useEffect(() => {
-    axios.get('https://admin.desh365.top/api/all-post') // Replace with your API URL
-      .then((response) => {
-        console.log('Fetched Data:', response.data); // Log the fetched data to the console
-        setData(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+    const fetchPosts = async () => {
+      try {
+        const [postsResponse, structureResponse] = await Promise.all([
+          axios.get('https://admin.desh365.top/api/all-post'),
+          axios.get('https://admin.desh365.top/api/structure')
+        ]);
 
-  const filteredData = useMemo(() => {
-    return data.filter(post => post.category_id === 6);
-  }, [data]);
+        const moreCategories = structureResponse.data.structure.more_three_category.split(',').map(categoryId => parseInt(categoryId.trim(), 10));
 
-  if (data.length === 0) {
-    return <div>Loading...</div>;
-  }
+        // Filter posts based on more_three_category and get the first post from each category
+        const firstPosts = postsResponse.data.data.map(category => {
+          const firstPost = category.posts.find(post => moreCategories.includes(post.category_id));
+          return firstPost;
+        }).filter(Boolean); // Remove any undefined (if no matching post found)
+
+        setPosts(firstPosts);
+        setStructure(structureResponse.data.structure);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchPosts();
+  }, []); // Empty dependency array means fetch once when component mounts
 
   return (
     <div>
-      <h1>Posts with Category ID 6</h1>
-      <ul>
-        {filteredData.map((post) => (
-          <li key={post.id}>
-            <h2>{post.title}</h2>
-            <p dangerouslySetInnerHTML={{ __html: post.post_body }}></p>
-            <img src={post.image} alt={post.title} width={200} />
-            <p>Category ID: {post.category_id}</p>
-            <p>Short URL: {post.short_url}</p>
-            <p>Created At: {post.created_at}</p>
-            <p>Updated At: {post.updated_at}</p>
-          </li>
+      <h1>First Post from Each Category</h1>
+      <div className="post-list">
+        {posts.map(post => (
+          <Link href={`Pages/post/${post?.id}`} key={post?.id}>
+          <div className='relative rounded-md overflow-hidden shadow-lg'>
+          <h2 className=' md:text-xl mb-3 text-sm font-bold'>
+                {post?.category_name}
+              </h2>
+            <div className='relative w-full h-64'>
+              <Image
+                src={`https://admin.desh365.top/public/storage/post-image/${post.image}`}
+                alt={post?.title || 'Default Alt Text'}
+                layout='fill'
+                objectFit='cover'
+                priority={true}
+              />
+            </div>
+            <div className='absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 rounded-md'></div>
+            <div className='absolute bottom-0 left-0 p-4'>
+              <h2 className='text-white md:text-md text-sm font-bold'>
+                {post.title}
+              </h2>
+            </div>
+          </div>
+        </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
-}
+};
+
+export default TestFile;

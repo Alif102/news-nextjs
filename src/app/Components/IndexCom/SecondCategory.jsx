@@ -1,43 +1,33 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import useSWR from 'swr';
 import axios from 'axios';
-import Link from 'next/link'; // Ensure you're using Next.js for Link component
-import Image from 'next/image'; // Ensure you're using Next.js for Image component
+import Link from 'next/link';
+import Image from 'next/image';
+import Loader from '../Shared/Loader';
+
+const fetcher = url => axios.get(url).then(res => res.data);
 
 const SecondCategory = () => {
-  const [secondCategoryPosts, setSecondCategoryPosts] = useState([]);
-  const [error, setError] = useState(null);
+  const { data: structureData, error: structureError } = useSWR('https://admin.desh365.top/api/structure', fetcher);
+  const { data: allPostsData, error: allPostsError } = useSWR('https://admin.desh365.top/api/all-post', fetcher);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch the structure data
-        const structureResponse = await axios.get('https://admin.desh365.top/api/structure');
-        const secondCategory = parseInt(structureResponse.data.structure.second_category);
-
-        // Fetch the allpost data
-        const allPostsResponse = await axios.get('https://admin.desh365.top/api/all-post');
-        const allPosts = allPostsResponse.data.data;
-
-        // Filter posts based on the second category
-        const filteredPosts = allPosts.flatMap(category => 
-          category.posts.filter(post => post.category_id === secondCategory)
-        );
-
-        // Set the filtered posts to state
-        setSecondCategoryPosts(filteredPosts);
-      } catch (error) {
-        setError('An error occurred while fetching the data');
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (error) {
-    return <div>{error}</div>;
+  if (structureError || allPostsError) {
+    return <div>An error occurred while fetching the data</div>;
   }
+
+  if (!structureData || !allPostsData) {
+    return <div>
+      <Loader/>
+    </div>;
+  }
+
+  const secondCategory = parseInt(structureData.structure.second_category);
+  const allPosts = allPostsData.data;
+
+  const secondCategoryPosts = allPosts.flatMap(category => 
+    category.posts.filter(post => post.category_id === secondCategory)
+  );
 
   return (
     <div className='grid lg:grid-cols-8 gap-2'>

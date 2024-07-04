@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -8,17 +8,25 @@ const AllPost = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // Axios GET request
-    axios.get('https://admin.desh365.top/api/all-post')
-      .then(response => {
-        const responseData = response.data;
-        if (responseData.status) {
-          setData(responseData.data);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+    // Check if data is cached in localStorage
+    const cachedData = localStorage.getItem('allPostData');
+    if (cachedData) {
+      setData(JSON.parse(cachedData));
+    } else {
+      // Axios GET request
+      axios.get('https://admin.desh365.top/api/all-post')
+        .then(response => {
+          const responseData = response.data;
+          if (responseData.status) {
+            setData(responseData.data);
+            // Cache the data in localStorage
+            localStorage.setItem('allPostData', JSON.stringify(responseData.data));
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
   }, []);
 
   return (

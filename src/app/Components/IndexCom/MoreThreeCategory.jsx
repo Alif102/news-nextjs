@@ -1,64 +1,45 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+"use client"
+import React from 'react';
+import useSWR from 'swr';
 import axios from 'axios';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import Loader from '../Shared/Loader';
+
+const fetcher = url => axios.get(url).then(res => res.data);
 
 const MoreThreeCategory = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [moreThreeCategory, setMoreThreeCategory] = useState([]);
+  const { data: postsData, error: postsError } = useSWR('https://admin.desh365.top/api/all-post', fetcher);
+  const { data: structureData, error: structureError } = useSWR('https://admin.desh365.top/api/structure', fetcher);
 
-  useEffect(() => {
-    // Fetch the structure data
-    axios.get('https://admin.desh365.top/api/structure')
-      .then((response) => {
-        const categories = response.data.structure.more_three_category.split(',');
-        setMoreThreeCategory(categories);
-      })
-      .catch((error) => {
-        console.error("Error fetching structure data:", error);
-      });
-
-    // Fetch the posts data
-    axios.get('https://admin.desh365.top/api/all-post')
-      .then((response) => {
-        const allPosts = response.data.data.flatMap(category => category.posts);
-        setData(allPosts);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (postsError || structureError) {
+    return <div>Error fetching data...</div>;
   }
 
-  const filteredData = data.filter(post => moreThreeCategory.includes(post.category_id.toString()));
+  if (!postsData || !structureData) {
+    return <div>
+      <Loader/>
+    </div>;
+  }
 
-  // Deduplicate by category_id
-  const seenCategoryIds = new Set();
-  const uniqueFilteredData = filteredData.filter(post => {
-    if (seenCategoryIds.has(post.category_id)) {
-      return false;
-    }
-    seenCategoryIds.add(post.category_id);
-    return true;
-  });
+  const moreCategories = structureData.structure.more_three_category.split(',').map(categoryId => parseInt(categoryId.trim(), 10));
+
+  // Filter posts based on more_three_category and get the first post from each category
+  const firstPosts = postsData.data.map(category => {
+    const firstPost = category.posts.find(post => moreCategories.includes(post.category_id));
+    return firstPost;
+  }).filter(Boolean); // Remove any undefined (if no matching post found)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {uniqueFilteredData.map(post => (
+      {firstPosts.map(post => (
         <Link href={`Pages/post/${post?.id}`} key={post?.id}>
-          <div className='relative rounded-md overflow-hidden shadow-lg'>
-          <h2 className=' md:text-xl mb-3 text-sm font-bold'>
-                {post?.category_name}
-              </h2>
-            <div className='relative w-full h-64'>
-              <Image
+          <div className='relative  overflow-hidden shadow-lg'>
+            <h2 className=' md:text-xl mb-3 text-sm font-bold'>
+              {post?.category_name}
+            </h2>
+            <div className='relative  w-full h-64'>
+              <Image className='rounded-lg'
                 src={`https://admin.desh365.top/public/storage/post-image/${post.image}`}
                 alt={post?.title || 'Default Alt Text'}
                 layout='fill'
