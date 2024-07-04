@@ -1,17 +1,11 @@
 // next.config.js
 module.exports = {
-  output: 'export',
-  images: {
-    unoptimized: true,
-    domains: ['admin.desh365.top', 'api.aladhan.com', 'news-nextjs-phi.vercel.app', 'newsportalnextjs.vercel.app'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'news-nextjs-phi.vercel.app',
-        port: '',
-        pathname: '/public/storage/post-image/**',
-      },
-    ],
+  output: {
+    page: 'export',
   },
-  // Any other configurations you need
+  images: {
+    domains: ['admin.desh365.top', 'api.aladhan.com', 'news-nextjs-phi.vercel.app', 'newsportalnextjs.vercel.app'],
+    loader: 'default',
+    path: '/_next/image',
+  },
 };
