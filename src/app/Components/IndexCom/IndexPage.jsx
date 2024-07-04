@@ -1,5 +1,5 @@
 import React from 'react'
-import HomeLayout from '../Components/IndexCom/HomeLayout'
+import HomeLayout from './HomeLayout'
 
 
 const IndexPages = () => {

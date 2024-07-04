@@ -1,5 +1,5 @@
 import React from 'react'
-import IndexPages from './Pages/IndexPages'
+import IndexPages from './Components/IndexCom/IndexPage'
 
 
 // const AdComponent = dynamic(() => import('./Components/AdComponent'), { ssr: false });

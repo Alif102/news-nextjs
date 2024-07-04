@@ -2,6 +2,7 @@
 module.exports = {
   output: 'export',
   images: {
+    unoptimized: true,
     domains: ['admin.desh365.top', 'api.aladhan.com', 'news-nextjs-phi.vercel.app', 'newsportalnextjs.vercel.app'],
     remotePatterns: [
       {
