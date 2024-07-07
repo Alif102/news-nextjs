@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3355748505131146" crossOrigin="anonymous"></script>
       </head>
       <body className={inter.className}>
-        <div className="container lg:max-w-6xl md:max-w-4xl mx-auto">
+        <div className="container xl:max-w-7xl lg:max-w-6xl md:max-w-4xl mx-auto">
           <Naavbar />
           {/* <Ad slot="2858387384" style={{ display: 'inline-block', width: '336px', height: '280px' }} /> */}
           {children}

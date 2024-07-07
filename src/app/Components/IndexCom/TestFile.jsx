@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-
+// i dont want use swr, i want use useState, useEffcet and usememo for data caching
 const TestFile = () => {
   const [posts, setPosts] = useState([]);
   const [structure, setStructure] = useState(null);

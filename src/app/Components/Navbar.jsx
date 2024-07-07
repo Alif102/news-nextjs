@@ -1,20 +1,35 @@
-"use client"
-import Image from 'next/image';
+"use client";
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-import newslogo from '../../assets/newslogo.png';
+import Header from './IndexCom/Header';
+
+const cacheDuration = 2 * 60 * 1000; // 2 minutes in milliseconds
+
+const fetchDataWithCache = async (url, cacheKey) => {
+  const now = new Date().getTime();
+  const cachedData = JSON.parse(localStorage.getItem(cacheKey));
+
+  if (cachedData && now - cachedData.timestamp < cacheDuration) {
+    return cachedData.data;
+  } else {
+    const response = await fetch(url);
+    const result = await response.json();
+    localStorage.setItem(cacheKey, JSON.stringify({ data: result, timestamp: now }));
+    return result;
+  }
+};
 
 const Navbar = () => {
-
-
-  // logo 
   const [logo, setLogo] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [activeRoute, setActiveRoute] = useState('');
+  const [isNavbarHidden, setIsNavbarHidden] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchLogo = async () => {
       try {
-        const response = await fetch('https://admin.desh365.top/api/structure');
-        const result = await response.json();
+        const result = await fetchDataWithCache('https://admin.desh365.top/api/structure', 'structureData');
         if (result.status) {
           setLogo(result.structure.logo);
           console.log(result.structure.logo);
@@ -24,27 +39,18 @@ const Navbar = () => {
       }
     };
 
-    fetchData();
-  }, []);
-
-  console.log(logo)
-
-
-
-
-  const [posts, setPosts] = useState([]);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [activeRoute, setActiveRoute] = useState('');
-  const [isNavbarHidden, setIsNavbarHidden] = useState(true);
-
-  useEffect(() => {
-    fetch('https://admin.desh365.top/api/all-post')
-      .then(response => response.json())
-      .then(data => {
-        const uniquePosts = removeDuplicates(data.data.posts, 'category_id');
+    const fetchPosts = async () => {
+      try {
+        const result = await fetchDataWithCache('https://admin.desh365.top/api/all-post', 'allPostsData');
+        const uniquePosts = removeDuplicates(result.data.posts, 'category_id');
         setPosts(uniquePosts);
-      })
-      .catch(error => console.error('Error fetching data:', error));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchLogo();
+    fetchPosts();
   }, []);
 
   const removeDuplicates = (array, key) => {
@@ -72,33 +78,15 @@ const Navbar = () => {
       <div className="bg-gray-200 mx-auto">
         <nav className="bg-gray-100 flex text-gray-800 items-center justify-between flex-wrap pb-2 px-5">
           <div>
-            {/* <Link href='/'>
-              <div className='rounded-md py-1' style={{ height: '80px', width: '80%' }}>
-                <Image 
-                  src={newslogo}
-                  alt='logo' 
-                  priority={true}
-                />
+            {logo ? (
+              <div>
+                <Link href='/'>
+                  <img className='h-20 w-36 rounded-md' src={`https://admin.desh365.top/public/storage/logo/${logo}`} alt="Logo" />
+                </Link>
               </div>
-            </Link> */}
-
-{logo ? (
-        <div>
-          {/* <Link href='/'>
-              <div className='rounded-md py-1' style={{ height: '80px', width: '80%' }}>
-                <Image 
-                src={`https://admin.desh365.top/public/storage/logo/${logo}`}
-                  alt='logo' 
-                  priority={true}
-                />
-              </div>
-            </Link> */}
-        
-        <Link href='/'>  <img className='h-20 w-36 rounded-md ' src={`https://admin.desh365.top/public/storage/logo/${logo}`} alt="Logo" /> </Link>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+            ) : (
+              <p>Loading...</p>
+            )}
           </div>
           <div className="block lg:hidden">
             <button
@@ -111,12 +99,11 @@ const Navbar = () => {
             </button>
           </div>
           <div
-            className={`w-full lg:w-auto block lg:items-center lg:inline-block ${
-              isNavbarHidden ? 'hidden' : ''
-            }`}
+            className={`w-full lg:w-auto block lg:items-center lg:inline-block ${isNavbarHidden ? 'hidden' : ''}`}
             id="navbar"
           >
-            <div className="lg:flex-grow justify-center text-[18px] text-center space-x-3">
+            <Header/>
+            {/* <div className="lg:flex-grow justify-center text-[18px] text-center space-x-3">
               <ul className="flex md:flex-row flex-col md:items-center md:gap-5 gap-3">
                 {posts.slice(0, 5).map(post => (
                   <li key={post.id}>
@@ -146,7 +133,7 @@ const Navbar = () => {
                   </li>
                 )}
               </ul>
-            </div>
+            </div> */}
           </div>
         </nav>
       </div>

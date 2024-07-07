@@ -1,26 +1,82 @@
-"use client"
-import React from 'react';
-import useSWR from 'swr';
+"use client";
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Carousel } from '@material-tailwind/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Loader from '../Shared/Loader';
 
-const fetcher = url => axios.get(url).then(res => res.data);
+const fetcher = async (url) => {
+  const response = await axios.get(url);
+  return response.data;
+};
+
+const cacheDuration = 2 * 60 * 1000; 
 
 const MainCategory = () => {
-  const { data: structureData, error: structureError } = useSWR('https://admin.desh365.top/api/structure', fetcher);
-  const { data: allPostsData, error: allPostsError } = useSWR('https://admin.desh365.top/api/all-post', fetcher);
+  const [structureData, setStructureData] = useState(null);
+  const [allPostsData, setAllPostsData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  if (structureError || allPostsError) {
-    return <div>An error occurred while fetching the data</div>;
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const structureCache = JSON.parse(localStorage.getItem('structureData'));
+        const postsCache = JSON.parse(localStorage.getItem('allPostsData'));
+
+        const now = new Date().getTime();
+
+        let fetchedStructureData;
+        let fetchedAllPostsData;
+
+        if (
+          structureCache &&
+          postsCache &&
+          now - structureCache.timestamp < cacheDuration &&
+          now - postsCache.timestamp < cacheDuration
+        ) {
+          fetchedStructureData = structureCache.data;
+          fetchedAllPostsData = postsCache.data;
+        } else {
+          [fetchedStructureData, fetchedAllPostsData] = await Promise.all([
+            fetcher('https://admin.desh365.top/api/structure'),
+            fetcher('https://admin.desh365.top/api/all-post')
+          ]);
+
+          localStorage.setItem('structureData', JSON.stringify({
+            data: fetchedStructureData,
+            timestamp: now,
+          }));
+          localStorage.setItem('allPostsData', JSON.stringify({
+            data: fetchedAllPostsData,
+            timestamp: now,
+          }));
+        }
+
+        setStructureData(fetchedStructureData);
+        setAllPostsData(fetchedAllPostsData);
+        setLoading(false);
+      } catch (err) {
+        setError(true);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
-  if (!structureData || !allPostsData) {
-    return <div>
-      <Loader/>
-    </div>;
+  if (error) {
+    return <div>An error occurred while fetching the data</div>;
   }
 
   const mainCategory = parseInt(structureData.structure.main_category);
