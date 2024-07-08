@@ -1,46 +1,49 @@
-"use client";
-import React, { useEffect, useState } from 'react';
+"use client"
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-const Page = ({ params }) => {
-  const id = params.id;
+const CategoryPage = ({ params }) => {
+    const { id } = params;
+    const [posts, setPosts] = useState([]);
+    const [categoryName, setCategoryName] = useState('');
 
-  const [posts, setPosts] = useState([]);
-  
-  useEffect(() => {
-    const fetchPosts = async (id) => {
-      try {
-        const response = await axios.get(`http://admin.desh365.top/api/category-post/${id}`);
-        const data = response.data;
-        console.log(data);
-        if (data.status) {
-          setPosts(data.data); // Updating state with data.data
+    useEffect(() => {
+        if (id) {
+            const fetchPosts = async () => {
+                try {
+                    const response = await axios.get(`https://admin.desh365.top/api/category-post/${id}`);
+                    const data = response.data;
+                    if (data.status) {
+                        setPosts(data.data);
+                        if (data.data.length > 0) {
+                            setCategoryName(data.data[0].category_name);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching the posts:', error);
+                }
+            };
+
+            fetchPosts();
         }
-      } catch (error) {
-        console.error('Error fetching the data:', error);
-      }
-    };
+    }, [id]);
 
-    fetchPosts();
-  }, [id]);
-
-  return (
-    <div>
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <div key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.post_body}</p>
-            <img src={`http://admin.desh365.top/storage/${post.image}`} alt={post.title} />
-            <p>Category: {post.category_name}</p>
-            {/* Render other post details as needed */}
-          </div>
-        ))
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
-  );
+    return (
+        <div>
+            <h1>{categoryName}</h1>
+            <ul>
+                {posts.map(post => (
+                    <li key={post.id}>
+                        <h2>{post.title}</h2>
+                        <img src={`https://admin.desh365.top/storage/post-image/${post.image}`} alt={post.title} />
+                        <p dangerouslySetInnerHTML={{ __html: post.post_body }}></p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
-export default Page;
+export default CategoryPage;
+
