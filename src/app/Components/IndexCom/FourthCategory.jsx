@@ -29,7 +29,7 @@ const FourthCategory = () => {
 
   return (
     <div className='grid lg:grid-cols-8 gap-2'>
-      <div className='lg:col-span-4 col-span-1 flex justify-center items-center'>
+      <div className='lg:col-span-4 col-span-1 flex items-center'>
         {filteredPosts.length > 0 && (
           <Link href={`/Pages/post/${filteredPosts[0]?.id}`} key={filteredPosts[0]?.id}>
             <div key={filteredPosts[0]?.id}>

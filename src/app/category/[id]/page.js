@@ -1,46 +1,40 @@
-// src/app/category/[id]/page.js
 "use client"
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
-const CategoryPage = ({ id }) => {
-    const [posts, setPosts] = useState([]);
+const CommonPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`https://admin.desh365.top/api/category-post/${id}`);
-                const data = response.data;
-                if (data.status) {
-                    setPosts(data.data);
-                }
-            } catch (error) {
-                console.error('Error fetching posts', error);
-                setPosts([]); // Set posts to empty array in case of error or no data
-            }
-        };
+  useEffect(() => {
+    if (id) { // Make sure 'id' is available before fetching
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`https://admin.desh365.top/api/category-post/${id}`);
+          console.log(response.data.data);
+          setCategories(response.data.data);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          setLoading(false);
+        }
+      };
 
-        fetchData();
-    }, [id]);
+      fetchData();
+    }
+  }, [id]);
 
-    return (
-        <div>
-            <h1>Category {id} Page</h1>
-            <div className="posts">
-                {posts.length === 0 ? (
-                    <p>No posts found for this category.</p>
-                ) : (
-                    posts.map((post) => (
-                        <div key={post.id} className="post">
-                            <h2>{post.title}</h2>
-                            <p>{post.short_url}</p>
-                            {/* Add more fields as needed */}
-                        </div>
-                    ))
-                )}
-            </div>
-        </div>
-    );
+  console.log(categories);
+
+  return (
+    <div>
+        <h1>cateee</h1>
+      {/* <NavbarPage categories={categories} /> */}
+    </div>
+  );
 };
 
-export default CategoryPage;
+export default CommonPage;

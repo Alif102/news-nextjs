@@ -31,7 +31,7 @@ const SecondCategory = () => {
 
   return (
     <div className='grid lg:grid-cols-8 gap-2'>
-      <div className='lg:col-span-4 col-span-1 flex justify-center items-center'>
+      <div className='lg:col-span-4 col-span-1 flex items-center'>
         {secondCategoryPosts.length > 0 && (
           <Link href={`/Pages/post/${secondCategoryPosts[0]?.id}`} key={secondCategoryPosts[0]?.id}>
             <div key={secondCategoryPosts[0]?.id}>

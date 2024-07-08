@@ -3,20 +3,19 @@ import React from 'react';
 import AllPost from './AllPost';
 import Add1 from './Add1';
 import Add from './Add';
- import TestFile2 from './TestFile2';
 // import AdComponent from '../AdComponent';
 
 import MainCategory from './MainCategory';
 
 
 import FifthCategory from './FifthCategory';
-// import MoreThreeCategory from './MoreThreeCategory';
-// import FifthMoreCategory from './FifthMoreCategory';
-// import FourthCategory from './FourthCategory';
-// import SecondCategory from './SecondCategory';
-// import ThreeCategory from './ThreeCategory';
-// import PrayerTimesPage from './PrayerTimePage';
-// import CurrencyRates from './CurrencyRates';
+import MoreThreeCategory from './MoreThreeCategory';
+import FifthMoreCategory from './FifthMoreCategory';
+import FourthCategory from './FourthCategory';
+import SecondCategory from './SecondCategory';
+import ThreeCategory from './ThreeCategory';
+import PrayerTimesPage from './PrayerTimePage';
+import CurrencyRates from './CurrencyRates';
 const HomeLayout = () => {
   return (
     <div>
@@ -47,7 +46,7 @@ const HomeLayout = () => {
         </div>
       </div>
 
-{/* <div className='grid lg:grid-cols-12 gap-3 justify-center items-center'>
+<div className='grid lg:grid-cols-12 gap-3 justify-center items-center'>
   <div className='lg:col-span-10 col-span-1 flex justify-center items-center'>
     <SecondCategory />
   </div>
@@ -60,25 +59,25 @@ const HomeLayout = () => {
 
       <div>
         <ThreeCategory/>
-      </div> */}
+      </div>
      
 
      
 
-      {/* <div className='grid mt-16 grid-cols-12  gap-5'>
+      <div className='grid mt-16 grid-cols-12  gap-5'>
 
 <div className=' col-span-12'> 
   <MoreThreeCategory/>
 </div>
 
 
-</div> */}
+</div>
 
 
 
 
 
-   {/* <div className='grid lg:grid-cols-12 gap-3 mt-9 justify-center '>
+   <div className='grid lg:grid-cols-12 gap-3 mt-9 justify-center '>
   <div className='lg:col-span-10  col-span-1 flex justify-center items-center'>
     <FourthCategory />
   </div>
@@ -86,13 +85,15 @@ const HomeLayout = () => {
   <div className='lg:col-span-2 col-span-1 flex justify-center '>
     <CurrencyRates />
   </div>
-</div> */}
+</div>
+
+
 
 
  <div className='grid grid-cols-12 mt-16 mb-6 gap-3'>
         <div className='col-span-10  '>
           <FifthCategory/>
-          <TestFile2/>
+       
       </div>
         
         <div className='col-span-2'>
@@ -104,14 +105,14 @@ const HomeLayout = () => {
 
 
       
-{/* <div className='grid grid-cols-12 mt-16 mb-6 gap-3'>
+<div className='grid grid-cols-12 mt-16 mb-6 gap-3'>
         <div className='col-span-12  '>
 <FifthMoreCategory/>
       </div>
         
         
 
-      </div> */}
+      </div>
       </div>
 
 
