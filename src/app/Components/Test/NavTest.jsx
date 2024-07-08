@@ -9,7 +9,7 @@ const NavTest = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/test2.json');
+        const response = await axios.get('https://admin.desh365.top/api/structure');
         const data = response.data.data;
         setCategories(data);
       } catch (error) {
@@ -22,7 +22,7 @@ const NavTest = () => {
 
   return (
     <div>
-        <h1>cate</h1>
+        <h1>category</h1>
       {categories.map((categoryGroup, index) => (
         <div key={index}>
           {categoryGroup.posts.map((post) => (

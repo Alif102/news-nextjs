@@ -1,22 +1,18 @@
-"use client"
+"use client";
 import React from 'react';
-import useSWR from 'swr';
-import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
-
-const fetcher = url => axios.get(url).then(res => res.data);
+import useFetchData from '../Shared/useFetchData';
 
 const ThreeCategories = ({ categoryNumber }) => {
-  const { data: allPostsData, error: postsError } = useSWR('https://admin.desh365.top/api/all-post', fetcher);
-  const { data: structureData, error: structureError } = useSWR('https://admin.desh365.top/api/structure', fetcher);
+  const { structureData, allPostsData, loading, error } = useFetchData();
 
-  if (postsError || structureError) {
-    return <div>Error loading posts: {postsError || structureError}</div>;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  if (!allPostsData || !structureData) {
-    return <div>Loading...</div>;
+  if (error) {
+    return <div>Error loading posts</div>;
   }
 
   const allPosts = allPostsData.data;

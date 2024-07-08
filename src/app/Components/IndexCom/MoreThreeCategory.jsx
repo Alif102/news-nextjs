@@ -1,31 +1,33 @@
-"use client"
+"use client";
 import React from 'react';
-import useSWR from 'swr';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import Loader from '../Shared/Loader';
+import useFetchData from '../Shared/useFetchData';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 
 const MoreThreeCategory = () => {
-  const { data: postsData, error: postsError } = useSWR('https://admin.desh365.top/api/all-post', fetcher);
-  const { data: structureData, error: structureError } = useSWR('https://admin.desh365.top/api/structure', fetcher);
+  const { structureData, allPostsData, loading, error } = useFetchData();
 
-  if (postsError || structureError) {
+  if (loading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
+
+  if (error) {
     return <div>Error fetching data...</div>;
   }
 
-  if (!postsData || !structureData) {
-    return <div>
-      <Loader/>
-    </div>;
-  }
-
   const moreCategories = structureData.structure.more_three_category.split(',').map(categoryId => parseInt(categoryId.trim(), 10));
+  const allPosts = allPostsData.data;
 
   // Filter posts based on more_three_category and get the first post from each category
-  const firstPosts = postsData.data.map(category => {
+  const firstPosts = allPosts.map(category => {
     const firstPost = category.posts.find(post => moreCategories.includes(post.category_id));
     return firstPost;
   }).filter(Boolean); // Remove any undefined (if no matching post found)

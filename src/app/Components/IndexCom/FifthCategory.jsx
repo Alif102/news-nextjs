@@ -1,25 +1,23 @@
-"use client"
+"use client";
 import React from 'react';
-import useSWR from 'swr';
-import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import Loader from '../Shared/Loader';
-
-const fetcher = url => axios.get(url).then(res => res.data);
+import useFetchData from '../Shared/useFetchData';
 
 const FifthCategory = () => {
-  const { data: structureData, error: structureError } = useSWR('https://admin.desh365.top/api/structure', fetcher);
-  const { data: allPostsData, error: allPostsError } = useSWR('https://admin.desh365.top/api/all-post', fetcher);
+  const { structureData, allPostsData, loading, error } = useFetchData();
 
-  if (structureError || allPostsError) {
-    return <div>An error occurred while fetching the data</div>;
+  if (loading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
-  if (!structureData || !allPostsData) {
-    return <div>
-      <Loader/>
-    </div>;
+  if (error) {
+    return <div>An error occurred while fetching the data</div>;
   }
 
   const fifthCategory = parseInt(structureData.structure.fifth_category);

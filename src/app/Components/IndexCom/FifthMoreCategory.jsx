@@ -1,88 +1,73 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Link from 'next/link'; // Adjust if you're using Next.js for navigation
-import Image from 'next/image'; // Adjust for Next.js Image component
+'use client';
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import Loader from '../Shared/Loader';
+import useFetchData from '../Shared/useFetchData';
 
 const FifthMoreCategory = () => {
-  const [posts, setPosts] = useState([]);
-  const [structure, setStructure] = useState(null);
+  const { structureData, allPostsData, loading, error } = useFetchData();
+  const [fifthMoreCategory, setFifthMoreCategory] = useState([]);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const [postsResponse, structureResponse] = await Promise.all([
-          axios.get('https://admin.desh365.top/api/all-post'),
-          axios.get('https://admin.desh365.top/api/structure')
-        ]);
+    if (structureData) {
+      const categories = structureData.structure.fifth_more_category.split(',');
+      setFifthMoreCategory(categories);
+    }
+  }, [structureData]);
 
-        const moreCategories = structureResponse.data.structure.fifth_more_category.split(',').map(categoryId => parseInt(categoryId.trim(), 10));
+  if (loading) {
+    return <Loader />;
+  }
 
-        // Filter posts based on more_three_category
-        const filteredPosts = postsResponse.data.data.flatMap(category => {
-          return category.posts.filter(post => moreCategories.includes(post.category_id));
-        });
+  if (error) {
+    return <div>Error fetching data...</div>;
+  }
 
-        setPosts(filteredPosts);
-        setStructure(structureResponse.data.structure);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  const allPosts = allPostsData.data;
+  const filteredData = allPosts.flatMap(category => 
+    category.posts.filter(post => fifthMoreCategory.includes(post.category_id.toString()))
+  );
 
-    fetchPosts();
-  }, []); // Empty dependency array means fetch once when component mounts
-
-  // Function to group posts by category_name
-  const groupPostsByCategory = () => {
-    const groupedPosts = {};
-    posts.forEach(post => {
-      if (!groupedPosts[post.category_name]) {
-        groupedPosts[post.category_name] = [];
-      }
-      groupedPosts[post.category_name].push(post);
-    });
-    return groupedPosts;
-  };
-
-  const groupedPosts = groupPostsByCategory();
+  const categoryData = {};
+  filteredData.forEach(post => {
+    if (!categoryData[post.category_id]) {
+      categoryData[post.category_id] = [];
+    }
+    categoryData[post.category_id].push(post);
+  });
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {Object.keys(groupedPosts).map(categoryName => (
-        <div key={categoryName} className="grid grid-cols-8 gap-4 mb-8">
-          <div className="col-span-4">
-            {groupedPosts[categoryName].length > 0 && (
-              <Link href={`/post/${groupedPosts[categoryName][0]?.id}`} key={groupedPosts[categoryName][0]?.id}>
-                <div className="relative h-72">
-                  <Image
-                    src={`https://admin.desh365.top/public/storage/post-image/${groupedPosts[categoryName][0]?.image}`}
-                    alt={groupedPosts[categoryName][0]?.title || 'Default Alt Text'}
-                    layout="fill"
-                    objectFit="cover"
-                    priority={true}
-                    className="rounded-lg"
-                  />
+    <div>
+      {Object.keys(categoryData).map(categoryId => (
+        <div key={categoryId} className='grid grid-cols-8 gap-2 mb-8'>
+          <div className='col-span-4'>
+            {categoryData[categoryId].length > 0 && (
+              <Link href={`/Pages/post/${categoryData[categoryId][0]?.id}`} key={categoryData[categoryId][0]?.id}>
+                <div className='' key={categoryData[categoryId][0]?.id}>
+                  <div className='relative' style={{ height: '380px', width: '90%' }}>
+                    <Image
+                      src={`https://admin.desh365.top/public/storage/post-image/${categoryData[categoryId][0]?.image}`}
+                      alt={categoryData[categoryId][0]?.title || 'Default Alt Text'}
+                      layout='fill'
+                      objectFit='cover'
+                      priority={true}
+                    />
+                  </div>
+                  <h2 className='md:text-xl mt-2 text-sm font-bold'>
+                    {categoryData[categoryId][0]?.title}
+                  </h2>
                 </div>
               </Link>
             )}
-            <h2 className="text-xl mt-2 font-bold">{groupedPosts[categoryName][0]?.title}</h2>
           </div>
-          <div className="col-span-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {groupedPosts[categoryName].slice(1).map(post => (
-                <Link href={`/details/${post?.id}`} key={post.id}>
-                  <div className="flex items-center space-x-4 py-4 cursor-pointer">
-                    <div className="w-24 h-24 relative">
-                      <Image
-                        src={`https://admin.desh365.top/public/storage/post-image/${post.image}`}
-                        alt={post.title}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-lg"
-                      />
-                    </div>
-                    <h2 className="text-sm hover:underline">{post.title}</h2>
+          <div className='col-span-4'>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+              {categoryData[categoryId].slice(1).map(post => (
+                <Link href={`/Pages/post/${post?.id}`} key={post.id}>
+                  <div className="flex gap-2 items-center space-y-2" key={post?.id}>
+                    <img className="w-24 h-24" src={`https://admin.desh365.top/public/storage/post-image/${post.image}`} alt={post.title} />
+                    <h2 className='text-sm hover:underline'>{post.title}</h2>
                   </div>
                 </Link>
               ))}

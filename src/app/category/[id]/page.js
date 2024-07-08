@@ -1,40 +1,46 @@
-"use client"
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+"use client";
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const CommonPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+const Page = ({ params }) => {
+  const id = params.id;
 
+  const [posts, setPosts] = useState([]);
+  
   useEffect(() => {
-    if (id) { // Make sure 'id' is available before fetching
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(`https://admin.desh365.top/api/category-post/${id}`);
-          console.log(response.data.data);
-          setCategories(response.data.data);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-          setLoading(false);
+    const fetchPosts = async (id) => {
+      try {
+        const response = await axios.get(`http://admin.desh365.top/api/category-post/${id}`);
+        const data = response.data;
+        console.log(data);
+        if (data.status) {
+          setPosts(data.data); // Updating state with data.data
         }
-      };
+      } catch (error) {
+        console.error('Error fetching the data:', error);
+      }
+    };
 
-      fetchData();
-    }
+    fetchPosts();
   }, [id]);
-
-  console.log(categories);
 
   return (
     <div>
-        <h1>cateee</h1>
-      {/* <NavbarPage categories={categories} /> */}
+      {posts.length > 0 ? (
+        posts.map((post) => (
+          <div key={post.id}>
+            <h2>{post.title}</h2>
+            <p>{post.post_body}</p>
+            <img src={`http://admin.desh365.top/storage/${post.image}`} alt={post.title} />
+            <p>Category: {post.category_name}</p>
+            {/* Render other post details as needed */}
+          </div>
+        ))
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };
 
-export default CommonPage;
+export default Page;

@@ -1,21 +1,20 @@
 
 import React from 'react';
-import AllPost from './AllPost';
-import Add1 from './Add1';
-import Add from './Add';
+import Add1 from '../Components/IndexCom/Add1';
+import MainCategory from '../Components/IndexCom/MainCategory';
+import AllPost from '../Components/IndexCom/AllPost';
+import Add from '../Components/IndexCom/Add';
+import SecondCategory from '../Components/IndexCom/SecondCategory';
+import PrayerTimesPage from '../Components/IndexCom/PrayerTimePage';
+import ThreeCategory from '../Components/IndexCom/ThreeCategory';
+import MoreThreeCategory from '../Components/IndexCom/MoreThreeCategory';
+import FourthCategory from '../Components/IndexCom/FourthCategory';
+import CurrencyRates from '../Components/IndexCom/CurrencyRates';
+import FifthCategory from '../Components/IndexCom/FifthCategory';
+import FifthMoreCategory from '../Components/IndexCom/FifthMoreCategory';
+
 // import AdComponent from '../AdComponent';
 
-import MainCategory from './MainCategory';
-
-
-import FifthCategory from './FifthCategory';
-import MoreThreeCategory from './MoreThreeCategory';
-import FifthMoreCategory from './FifthMoreCategory';
-import FourthCategory from './FourthCategory';
-import SecondCategory from './SecondCategory';
-import ThreeCategory from './ThreeCategory';
-import PrayerTimesPage from './PrayerTimePage';
-import CurrencyRates from './CurrencyRates';
 const HomeLayout = () => {
   return (
     <div>

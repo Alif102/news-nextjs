@@ -1,5 +1,5 @@
+import HomeLayout from '@/app/Pages/HomeLayout'
 import React from 'react'
-import HomeLayout from './HomeLayout'
 
 
 const IndexPages = () => {

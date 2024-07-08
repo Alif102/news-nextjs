@@ -1,31 +1,30 @@
-"use client"
-import React from 'react';
-import useSWR from 'swr';
-import axios from 'axios';
+"use client";
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-
-const fetcher = url => axios.get(url).then(res => res.data);
+import useFetchData from '../Shared/useFetchData';
 
 const FourthCategory = () => {
-  const { data: structureData, error: structureError } = useSWR('https://admin.desh365.top/api/structure', fetcher);
-  const { data: allPostsData, error: allPostsError } = useSWR('https://admin.desh365.top/api/all-post', fetcher);
+  const { structureData, allPostsData, loading, error } = useFetchData();
 
-  if (structureError || allPostsError) {
-    return <div>An error occurred while fetching the data</div>;
-  }
+  const fourthCategory = useMemo(() => {
+    return structureData ? parseInt(structureData.structure.fourth_category) : null;
+  }, [structureData]);
 
-  if (!structureData || !allPostsData) {
+  const filteredPosts = useMemo(() => {
+    if (!allPostsData || !fourthCategory) return [];
+    return allPostsData.data.flatMap(category => 
+      category.posts.filter(post => post.category_id === fourthCategory)
+    );
+  }, [allPostsData, fourthCategory]);
+
+  if (loading) {
     return <div>Loading...</div>;
   }
 
-  const fourthCategory = parseInt(structureData.structure.fourth_category);
-  const allPosts = allPostsData.data;
-
-  // Filter posts based on the fourth category
-  const filteredPosts = allPosts.flatMap(category => 
-    category.posts.filter(post => post.category_id === fourthCategory)
-  );
+  if (error) {
+    return <div>An error occurred while fetching the data</div>;
+  }
 
   return (
     <div className='grid lg:grid-cols-8 gap-2'>
