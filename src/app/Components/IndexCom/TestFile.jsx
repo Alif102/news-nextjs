@@ -39,7 +39,7 @@ const TestFile = () => {
       <h1>First Post from Each Category</h1>
       <div className="post-list">
         {posts.map(post => (
-          <Link href={`Pages/post/${post?.id}`} key={post?.id}>
+          <Link href={`post/${post?.id}`} key={post?.id}>
           <div className='relative rounded-md overflow-hidden shadow-lg'>
           <h2 className=' md:text-xl mb-3 text-sm font-bold'>
                 {post?.category_name}

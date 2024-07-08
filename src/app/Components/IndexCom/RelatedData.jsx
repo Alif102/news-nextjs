@@ -22,7 +22,7 @@ const RelatedData = ({ related }) => {
 
               return (
                 <div key={post?.id} className='overflow-auto h-300px'>
-                  <Link href={`/Pages/post/${post?.id}`} key={post?.id}>
+                  <Link href={`/post/${post?.id}`} key={post?.id}>
                     <div className='flex gap-2 flex-col my-3'>
                       <div className='object-cover rounded-md'>
                         <Image
