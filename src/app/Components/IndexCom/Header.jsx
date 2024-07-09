@@ -21,6 +21,13 @@ const Header = () => {
         fetchCategories();
     }, []);
 
+    const formatUrl = (url) => {
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            return url;
+        }
+        return `https://${url}`;
+    };
+
     return (
         <div>
             <ul className='flex gap-4'>
@@ -30,11 +37,15 @@ const Header = () => {
                             <Link href={`/category/${category.id}`}>
                                 <p>{category.name}</p>
                             </Link>
-                        ) : (
-                            <Link href={`/${category.id}`}>
+                        ) : category.key === 'page' ? (
+                            <Link href={`/${category.name}`}>
                                 <p>{category.name}</p>
                             </Link>
-                        )}
+                        ) : category.key === 'customlink' ? (
+                            <a href={formatUrl(category.id)} target="_blank" rel="noopener noreferrer">
+                                <p>{category.name}</p>
+                            </a>
+                        ) : null}
                     </li>
                 ))}
             </ul>
